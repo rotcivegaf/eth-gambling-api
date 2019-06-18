@@ -1,7 +1,13 @@
+const Web3 = require('web3')
 
+const rpcUrl = "https://ropsten.infura.io/v3/f6427a6723594cdd8affb596d357d268";
+const web3 = new Web3(new Web3.providers.HttpProvider(rpcUrl));
+
+module.exports.getTx = async (seconds) => {
+  console.log("aa");
+}
+/*
 export async function subscribeLogEvent() {
-  const web3 = await web3instance();
-
   const subscription = await web3.eth.subscribe(
     'logs',
     {
@@ -21,7 +27,6 @@ export async function subscribeLogEvent() {
 }
 
 export async function getEvents() {
-  const web3 = await web3instance();
   const coinFlip = new web3.eth.Contract(CoinFlipABI, coinFlipAddress);
 
   const a = [];
@@ -58,3 +63,4 @@ export async function getEvents() {
   );
   console.log(b);
 }
+*/
