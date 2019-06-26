@@ -1,4 +1,4 @@
-module.exports = {
+const nodes = {
   infura: {
     ropsten: 'https://ropsten.infura.io/v3/f6427a6723594cdd8affb596d357d268',
     mainnet: 'https://mainnet.infura.io/v3/f6427a6723594cdd8affb596d357d268',
@@ -8,4 +8,9 @@ module.exports = {
     mainnet: 'http://main.node.rcn.loans:8545',
   },
   local: 'http://localhost:8545',
+};
+
+module.exports = {
+  node: nodes.infura.ropsten,
+  interval: 500000
 };

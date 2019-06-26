@@ -1,4 +1,4 @@
-module.exports = [
+const contracts = [
   {
     name: 'gamblingManager',
     address: '0x1654F07d008ba7b3683C575BDBC97C90d3c1AA6f',
@@ -2007,3 +2007,6 @@ module.exports = [
     ],
   },
 ];
+
+module.exports.addresses = contracts.map(c => c.address);
+module.exports.ABIs = contracts.map(c => c.ABI);

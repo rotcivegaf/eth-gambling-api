@@ -1,60 +1,31 @@
-const util = require('util');
-const Web3 = require('web3');
-
+const w3Utils = require('./w3Utils.js');
 const contracts = require('./contracts.js');
-const environment = require('./environment.js');
 
+const env = require('./environment.js');
 
+module.exports.main = async () => {
+  for (let i = 0; true; ) {
+    const lastBlockNumber = await w3Utils.getBlockNumber();
 
-const gamblingManagerAddress = '0x9B21827871079537482Eefe04bff55859D8059bC';
-const coinFlipAddress = '0x3Df4FE2B467C5bbA5688F4b494FEb2A5A6B65BCb';
+    if(i == lastBlockNumber) {
+      await w3Utils.sleep(2000);
+    } else {
+      if (Math.abs(i - lastBlockNumber) < env.interval) {
+        await w3Utils.getPastLogs(contracts.addresses, i, lastBlockNumber);
+        console.log('get: ' + i + ' to ' + lastBlockNumber + ' blocks logs, interval: ' + Math.abs(i - lastBlockNumber));
+        i = lastBlockNumber;
+      } else {
+        const j = i + env.interval;
+        console.log('get: ' + i + ' to ' + j + ' blocks logs, interval: ' + env.interval);
+        const logs = await w3Utils.getPastLogs(contracts.addresses, i, j);
 
-// const w3 = new Web3(new Web3.providers.HttpProvider(environment.infura.mainnet));
-// const w3 = new Web3(new Web3.providers.HttpProvider(environment.rcn.mainnet));
+        if(logs != '')
+          console.log('logs');
 
-const w3 = new Web3(new Web3.providers.HttpProvider(environment.infura.ropsten));
-// const w3 = new Web3(new Web3.providers.HttpProvider(environment.rcn.ropsten));
-
-//const w3 = new Web3(new Web3.providers.HttpProvider(environment.local))
-
-module.exports.test = async () => {
-  //await this.getPastLogs(gamblingManagerAddress);
-  console.log(await this.getPastLogs(contracts[0].address));
-
-  // await this.subscribeLogEvent(coinFlipAddress);
-
-  //console.log(await this.getPastLogs(contracts[0].ABI, contracts[0].address));
-  // console.log((await this.allEvents(contracts[0].ABI, gamblingManagerAddress)));
-  // await this.allEvents(contracts[0].ABI, coinFlipAddress);
-
-  // await this.allEvents(contracts[1].ABI, coinFlipAddress);
-  // await this.allEvents(contracts[0].ABI, contracts[0].address);
+        i = j;
+      }
+    }
+  }
 };
 
-module.exports.getBlockTime = async () => {
-  const block = await w3.eth.getBlock(await w3.eth.getBlockNumber());
-  return block.timestamp;
-};
-
-module.exports.getPastLogs = async (address) => {
-  const allLogs = util.promisify(w3.eth.getPastLogs);
-
-  return await allLogs({
-    fromBlock: 5820603,
-    toBlock: 5820603,
-    address: address
-  });
-};
-
-module.exports.allEvents = async (ABI, address) => {
-  const gamblingManager = new w3.eth.Contract(ABI, address);
-  const allEventsAsync = util.promisify(gamblingManager.events.allEvents);
-
-  await allEventsAsync({ fromBlock: 0 }, function (error, result) {
-    if (error)
-      console.log(error);
-    console.log(result);
-  });
-};
-
-this.test();
+this.main();
