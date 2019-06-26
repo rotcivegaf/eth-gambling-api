@@ -6,8 +6,8 @@ const environment = require('./environment.js');
 module.exports.w3 = new W3(new W3.providers.HttpProvider(environment.node));
 const w3 = this.w3;
 
-module.exports.getBlockNumber = async () => {
-  return await w3.eth.getBlockNumber();
+module.exports.getBlock = async (blockHashOrBlockNumber) => {
+  return await w3.eth.getBlock(blockHashOrBlockNumber);
 };
 
 module.exports.sleep = async (ms) => {
