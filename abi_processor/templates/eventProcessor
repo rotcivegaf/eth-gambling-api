@@ -1,0 +1,12 @@
+const /*CONTRACT_NAME*/ = require('../contracts//*CONTRACT_NAME*/.json');
+const utils = require('../utils.js');
+
+module.exports = async (log) => {
+  const event = utils.getEvent(/*CONTRACT_NAME*/, log);
+
+  return await this.commit(event);
+};
+
+module.exports.commit = async (log) => {
+  return [log];
+};
