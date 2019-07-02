@@ -45,8 +45,8 @@ async function main () {
   if (!(await existsSync(eventProcessorDir)))
     mkdirSync(eventProcessorDir);
 
-  for (let i = 0; i < contractsToProcess.length; i++) {
-    const contractPath = './build/contracts/' + contractsToProcess[i];
+  contractsToProcess.forEach( async (contract)  => {
+    const contractPath = './build/contracts/' + contract;
     const contractContent = JSON.parse(await readFile(contractPath));
     const contractAbi = contractContent.abi;
 
@@ -57,20 +57,21 @@ async function main () {
       contractAbi.length === 0 ||
       typeof contractAbi.find(x => x.type  === 'event') === 'undefined'
     ){
-      continue;
+      return;
     }
 
     const contractDir = eventProcessorDir + '/' + contractContent.contractName;
     if (!(await existsSync(contractDir)))
       mkdirSync(contractDir);
 
-    for (let j = 0; j < contractAbi.length; j++) {
-      if (contractAbi[j].type === 'event') {
-        const eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractAbi[j].name);
-        writeFile (contractDir + '/' + contractAbi[j].name + '.js', eventProcessor);
+    contractAbi.forEach( async (e)  => {
+      if (e.type === 'event') {
+        let eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
+        eventProcessor = eventProcessor.split('/*EVENT_NAME*/').join(e.name);
+        writeFile (contractDir + '/' + e.name + '.js', eventProcessor);
       }
-    }
-  }
+    });
+  });
 }
 
 main();

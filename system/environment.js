@@ -12,5 +12,6 @@ const nodes = {
 
 module.exports = {
   node: nodes.infura.ropsten,
-  interval: 500000
+  interval: 5000,
+  startBlock: 5464084
 };
