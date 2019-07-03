@@ -1,18 +1,18 @@
-const GamblingManager = require('../build/contracts/GamblingManager.json');
-const CoinFlip = require('../build/contracts/CoinFlip.json');
+const GamblingManager = require('./contracts/GamblingManager.json');
+const CoinFlip = require('./contracts/CoinFlip.json');
 
-const contracts = [
+module.exports.data = [
   {
-    name: 'gamblingManager',
+    name: 'GamblingManager',
     address: '0x1654F07d008ba7b3683C575BDBC97C90d3c1AA6f',
-    ABI: GamblingManager.abi
+    abi: GamblingManager.abi
   },
   {
-    name: 'coinFlip',
+    name: 'CoinFlip',
     address: '0xA6ff317b10b07360c56fA5B2B42F91C7B6b77E64',
-    ABI: CoinFlip.abi
+    abi: CoinFlip.abi
   },
 ];
 
-module.exports.addresses = contracts.map(c => c.address);
-module.exports.ABIs = contracts.map(c => c.ABI);
+module.exports.addresses = this.data.map(c => c.address);
+module.exports.abis = this.data.map(c => c.abi);

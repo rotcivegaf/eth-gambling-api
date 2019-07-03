@@ -11,4 +11,3 @@ package-lock.json
 # Docker
 Dockerfile
 docker-compose.yml
-/build/eventProcessor/
