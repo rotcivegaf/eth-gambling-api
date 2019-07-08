@@ -1,11 +1,11 @@
 const w3Utils = require('./w3Utils.js');
-const contracts = require('./contracts.js');
+const contracts = require('../contracts.js');
 const dBConnector = require('./dBConnector.js');
 const LogProcessor = require('./LogProcessor.js');
 
 const env = require('./environment.js');
 
-module.exports.main = async () => {
+module.exports = async () => {
   const logProcessor = new LogProcessor();
 
   for (let from = env.startBlock, to = 0; ;) {
@@ -37,5 +37,3 @@ module.exports.main = async () => {
     }
   }
 };
-
-this.main();

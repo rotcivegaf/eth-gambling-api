@@ -1,12 +1,22 @@
-const asyncFs = require('./asyncFs.js');
 const W3 = require('web3');
+const fs = require('fs');
+
+const mkdirAsync = (dir) => {
+  try {
+    if (!fs.existsSync(dir)){
+      fs.mkdirSync(dir);
+    }
+  } catch (err) {
+    console.error(err);
+  }
+};
 
 const w3 = new W3();
 
-async function getSignature (event) {
+function getSignature (event) {
   let signature = event.name + '(';
   if (event.inputs.length > 0) {
-    event.inputs.forEach(async (input) => {
+    event.inputs.forEach((input) => {
       signature += input.type + ',';
     });
     signature = signature.slice(0, -1);
@@ -15,22 +25,20 @@ async function getSignature (event) {
 
   return {
     signature: signature,
-    hexSignature: await w3.utils.soliditySha3({ t: 'string', v: signature})
+    hexSignature: w3.utils.soliditySha3({ t: 'string', v: signature})
   };
 }
 
-async function main () {
-  const eventProcessorTemplate = await asyncFs.readFile('./abi_processor/templates/event');
-  const contractsToProcess = await asyncFs.readdir('./system/contracts/');
+module.exports = () => {
+  const eventProcessorTemplate = fs.readFileSync('./abi_processor/templates/event', 'utf8');
+  const contractsToProcess = fs.readdirSync('./ETH/build/contracts/');
 
-  const eventProcessorDir = './system/events';
+  const eventProcessorDir = './ETH/events/';
+  mkdirAsync(eventProcessorDir);
 
-  if (!(await asyncFs.existsSync(eventProcessorDir)))
-    await asyncFs.mkdirSync(eventProcessorDir);
-
-  contractsToProcess.forEach( async (contract)  => {
-    const contractPath = './system/contracts/' + contract;
-    const contractContent = JSON.parse(await asyncFs.readFile(contractPath));
+  contractsToProcess.forEach((contract)  => {
+    const contractPath = './ETH/build/contracts/' + contract;
+    const contractContent = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     const contractAbi = contractContent.abi;
 
     if(
@@ -44,19 +52,16 @@ async function main () {
     }
 
     const contractDir = eventProcessorDir + '/' + contractContent.contractName;
-    if (!(await asyncFs.existsSync(contractDir)))
-      await asyncFs.mkdirSync(contractDir);
+    mkdirAsync(contractDir);
 
-    contractAbi.forEach( async (e)  => {
+    contractAbi.forEach((e)  => {
       if (e.type === 'event') {
-        const signature = await getSignature(e);
+        const signature = getSignature(e);
         let eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
         eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE*/').join(signature.signature);
         eventProcessor = eventProcessor.split('/*EVENT_HEX_SIGNATURE*/').join(signature.hexSignature);
-        await asyncFs.writeFile (contractDir + '/' + signature.signature + '.js', eventProcessor);
+        fs.writeFileSync(contractDir + '/' + signature.signature + '.js', eventProcessor);
       }
     });
   });
-}
-
-main();
+};
