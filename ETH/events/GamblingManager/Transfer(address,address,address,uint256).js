@@ -1,4 +1,4 @@
-const GamblingManager = require('../../contracts/GamblingManager.json');
+const GamblingManager = require('../../build/contracts/GamblingManager.json');
 
 module.exports.signature = 'Transfer(address,address,address,uint256)';
 module.exports.hexSignature = '0xd1398bee19313d6bf672ccb116e51f4a1a947e91c757907f51fbb5b5e56c698f';
@@ -10,5 +10,8 @@ module.exports.process = async (log) => {
 };
 
 async function commit(log) {
-  return [log];
+  return {
+    key: log.id.slice(4).toString(),
+    data: log.toString()
+  };
 }

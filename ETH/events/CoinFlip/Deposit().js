@@ -1,4 +1,4 @@
-const CoinFlip = require('../../contracts/CoinFlip.json');
+const CoinFlip = require('../../build/contracts/CoinFlip.json');
 
 module.exports.signature = 'Deposit()';
 module.exports.hexSignature = '0xed21248cb703b524cc0029bb8669df941baca560163a3bc6ad184e7e9c268070';

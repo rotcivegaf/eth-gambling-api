@@ -1,4 +1,4 @@
-const GamblingManager = require('../../contracts/GamblingManager.json');
+const GamblingManager = require('../../build/contracts/GamblingManager.json');
 
 module.exports.signature = 'Deposit(address,address,address,uint256)';
 module.exports.hexSignature = '0x7cfff908a4b583f36430b25d75964c458d8ede8a99bd61be750e97ee1b2f3a96';

@@ -12,6 +12,12 @@ const nodes = {
 
 module.exports = {
   node: nodes.infura.ropsten,
-  interval: 5000,
-  startBlock: 5464084
+  interval: 10,
+  startBlock: 5464084,
+  wait: 2000,
+  redis: {
+    port: 18522,
+    endpoint: 'redis-18522.c16.us-east-1-2.ec2.cloud.redislabs.com',
+    password: 'e4cUZUzXfoT3ePWprVLWZBydeeqvkH0u'
+  }
 };

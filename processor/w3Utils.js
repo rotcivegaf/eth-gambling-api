@@ -1,9 +1,9 @@
 const util = require('util');
 const W3 = require('web3');
 
-const environment = require('./environment.js');
+const env = require('../environment.js');
 
-module.exports.w3 = new W3(new W3.providers.HttpProvider(environment.node));
+module.exports.w3 = new W3(new W3.providers.HttpProvider(env.node));
 const w3 = this.w3;
 
 module.exports.getBlock = async (blockHashOrBlockNumber) => {

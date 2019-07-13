@@ -1,5 +1,5 @@
-const GamblingManager = require('./contracts/GamblingManager.json');
-const CoinFlip = require('./contracts/CoinFlip.json');
+const GamblingManager = require('./build/contracts/GamblingManager.json');
+const CoinFlip = require('./build/contracts/CoinFlip.json');
 
 module.exports.data = [
   {
@@ -16,3 +16,6 @@ module.exports.data = [
 
 module.exports.addresses = this.data.map(c => c.address);
 module.exports.abis = this.data.map(c => c.abi);
+module.exports.getName = (address) => {
+  return this.data.find(c => c.address === address).name;
+};
