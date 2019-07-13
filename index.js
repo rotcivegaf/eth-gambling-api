@@ -6,6 +6,13 @@ const PORT = process.env.PORT || 5000;
 
 abiProcessor();
 
+const redis = require('redis');
+const client = redis.createClient(18522, 'redis-18522.c16.us-east-1-2.ec2.cloud.redislabs.com');
+
+client.on('connect', function() {
+  console.log('Connected to Redis');
+});
+
 express()
   .use(express.static(path.join(__dirname, 'public')))
   .get('/', (req, res) => res.send(processor()))
