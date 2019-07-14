@@ -24,12 +24,17 @@ module.exports = async () => {
 
       for (let i = 0; i < logs.length; i++) {
         const commit = await logProcessor.process(logs[i]);
-        logger.log(contracts.getName(logs[i].address), logs[i]);
+        const contractName = contracts.getName(logs[i].address);
+        logger.log(contractsName, logs[i]);
 
-        await redis.set(commit);
+        await redis.hmset(
+          contractName + ':' + logs[i].address + ':' + commit.key,
+          commit.dataObject
+        );
         logger.commit(commit);
       }
 
+      await redis.set("lastProcessBlock", to.toString());
       logger.processedBlocks(from, to);
       from = to;
     }

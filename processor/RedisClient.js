@@ -7,9 +7,19 @@ module.exports = class RedisClient {
     this.client = getClient();
   }
 
-  async set(commit) {
-    await this.client.set(commit.key, commit.data, redis.print);
+  async set(key, data) {
+    await this.client.set(key, data, redis.print);
   }
+
+  async hmset(commit) {
+    await this.client.hmset(key, dataObject, redis.print);
+  }
+
+//client.hmset('frameworks', {
+//    'javascript': 'AngularJS',
+//    'css': 'Bootstrap',
+//    'node': 'Express'
+//});
 
   async get(commit) {
     await this.client.get('my test key', function (error, result) {
