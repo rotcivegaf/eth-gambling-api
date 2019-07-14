@@ -12,7 +12,7 @@ const nodes = {
 
 module.exports = {
   node: nodes.infura.ropsten,
-  interval: 10,
+  interval: 5000,
   startBlock: 5464084,
   wait: 2000
 };
