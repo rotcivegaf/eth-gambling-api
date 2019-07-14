@@ -7,7 +7,7 @@ module.exports.hexSignature = '0xc4317439075cf670016d9fff15c98babe21304c2c393e72
 module.exports.process = async (log) => {
   const key = 'bet:' + log.topics[2];
   const bet = {
-  	creator: log.topics[1]
+  	creator: log.topics[1],
   	token: log.data.slice(0, 66)
   };
 
