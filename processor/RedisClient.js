@@ -23,15 +23,12 @@ module.exports = class RedisClient {
 };
 
 function getClient() {
-  const client = redis.createClient(env.redis.port, env.redis.endpoint, {no_ready_check: true});
-
-  client.auth(env.redis.password, function (err) {
-    if (err) throw err;
-  });
-
+  const client = require('redis').createClient(process.env.REDISCLOUD_URL);
+  
   client.on('connect', function() {
     console.log('Connected to Redis');
     client.flushdb(); // To delete DB
   });
+
   return client;
 }
