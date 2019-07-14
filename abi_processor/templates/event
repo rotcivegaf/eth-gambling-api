@@ -1,3 +1,4 @@
+// TODO add contracts as comment to help
 const /*CONTRACT_NAME*/ = require('../../contracts//*CONTRACT_NAME*/.json');
 
 module.exports.signature = '/*EVENT_SIGNATURE*/';
