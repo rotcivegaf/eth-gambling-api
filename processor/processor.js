@@ -25,7 +25,7 @@ module.exports = async () => {
       for (let i = 0; i < logs.length; i++) {
         const commit = await logProcessor.process(logs[i]);
         const contractName = contracts.getName(logs[i].address);
-        logger.log(contractsName, logs[i]);
+        logger.log(contractName, logs[i]);
 
         await redis.hmset(
           contractName + ':' + logs[i].address + ':' + commit.key,
