@@ -14,5 +14,5 @@ module.exports = {
   node: nodes.infura.ropsten,
   interval: 5000,
   startBlock: 5464084,
-  wait: 2000
+  wait: 29000
 };
