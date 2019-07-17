@@ -34,7 +34,7 @@ module.exports = class RedisClient {
 
 function getClient() {
   const client = require('redis').createClient(process.env.REDISCLOUD_URL);
-  
+
   client.on('connect', function() {
     console.log('Connected to Redis');
     client.flushdb(); // To delete DB

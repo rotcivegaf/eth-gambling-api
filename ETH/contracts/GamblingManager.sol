@@ -5,7 +5,7 @@ pragma solidity ^0.5.0;
 
 
 contract ITipERC20 {
-    event Tip(uint256 _amount);
+    event Tip(address indexed _from, address indexed _token, uint256 _amount);
 
     function tip(address _from, address _token, uint256 _amount) external payable;
 }
@@ -98,8 +98,8 @@ pragma solidity ^0.5.6;
 
 
 interface IERC721 {
-    event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
-    event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);
+    event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
+    event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
 
     function balanceOf(address _owner) external view returns (uint256);
@@ -957,7 +957,7 @@ contract TipERC20 is BalanceManager, ITipERC20, Ownable {
         if (tansferAmount != 0)
             _transferFrom(_from, owner, _token, tansferAmount);
 
-        emit Tip(_amount);
+        emit Tip(_from, _token, _amount);
     }
 }
 

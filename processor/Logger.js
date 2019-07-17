@@ -7,8 +7,8 @@ module.exports = class Logger {
     console.log('Wait: ' + ms + ' ms');
   }
 
-  log(contractName, log) {
-    console.log('Log: "contractName":"' + contractName + '"' + ' ' + JSON.stringify(log));
+  log(contractName, eventName) {
+    console.log(contractName + ' ' + eventName);
   }
 
   commit(commit) {

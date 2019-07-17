@@ -14,33 +14,16 @@ module.exports.sleep = async (ms) => {
   return new Promise(resolve => setTimeout(resolve, ms));
 };
 
-//module.exports.getPastLogs = async (addresses, from, to) => {
-//  const allLogs = util.promisify(w3.eth.getPastLogs);
-//
-//  return await allLogs({
-//    fromBlock: from,
-//    toBlock: to,
-//    address: addresses
-//  });
-//};
-
-module.exports.getPastLogs = async (address, s,ss) => {
+module.exports.getPastLogs = async (address, from, to) => {
   const allLogs = util.promisify(w3.eth.getPastLogs);
 
   return await allLogs({
-    fromBlock: s.toString(),
-    toBlock: ss.toString(),
+    fromBlock: from.toString(),
+    toBlock: to.toString(),
     address: address
   });
 };
-//
-//module.exports.allEvents = async (ABI, address) => {
-//  const gamblingManager = new w3.eth.Contract(ABI, address);
-//  const allEventsAsync = util.promisify(gamblingManager.events.allEvents);
-//
-//  await allEventsAsync({ fromBlock: 0 }, function (error, result) {
-//    if (error)
-//      console.log(error);
-//    console.log(result);
-//  });
-//};
+
+module.exports.getTransactionReceipt = async (hash) => {
+  return await w3.eth.getTransactionReceipt(hash);
+};

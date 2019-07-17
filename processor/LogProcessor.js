@@ -1,28 +1,35 @@
 const contracts = require('../ETH/contracts.js');
+const w3Utils = require('./w3Utils.js');
 
 module.exports = class LogProcessor {
-  constructor() {
+  constructor(logger) {
     // This attr storage the process method of each events of the contracts
     this.eventsContracts = initEventsContracts();
+    this.logger = logger;
   }
 
   async process(log) {
-    return await this.eventsContracts[log.address][log.topics[0]].process(log);
+    const event = this.eventsContracts[log.address][log.topics[0]];
+    const contractName = contracts.getName(log.address);
+
+    this.logger.log(contractName, event.signature);
+    console.log(log);
+
+    return await event.process(log);
   }
 };
 
 function initEventsContracts () {
   const eventsContracts = {};
 
-  for (let i = 0; i < contracts.data.length; i++) {
-    const contract = contracts.data[i];
+  for (const contract of contracts.data) {
     const events = {};
 
-    for (let j = 0; j < contract.abi.length; j++) {
-      const event = contract.abi[j];
-      if (event.type === 'event') {
-        const eventFile = require('../ETH/events/' + contract.name + '/' + getSignature(event) + '.js');
-        events[eventFile.hexSignature] = eventFile;
+    for (const obj of contract.abi) {
+      if (obj.type === 'event') {
+        const Event = require('../ETH/events/' + contract.name + '/' + getName(obj) + '.js');
+        const event = new Event();
+        events[event.hexSignature] = event;
       }
     }
 
@@ -32,10 +39,7 @@ function initEventsContracts () {
   return eventsContracts;
 }
 
-// Auxiliar function to get the signature of the event
-// input: event abi object return a signature of the event in string
-// In example: return eventA(addres,uint,bytes32)
-function getSignature (event) {
+function getName (event) {
   let signature = event.name + '(';
   if (event.inputs.length > 0) {
     event.inputs.forEach((input) => {
@@ -45,5 +49,9 @@ function getSignature (event) {
   }
   signature += ')';
 
-  return signature;
+  const hexSignature = w3Utils.w3.utils.soliditySha3({ t: 'string', v: signature});
+  const name = signature.split('(')[0];
+  const hexBytes4 = hexSignature.slice(2, 10);
+
+  return name + '_' + hexBytes4;
 }

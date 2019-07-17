@@ -22,15 +22,18 @@ function getSignature (event) {
     signature = signature.slice(0, -1);
   }
   signature += ')';
+  const hexSignature = w3.utils.soliditySha3({ t: 'string', v: signature});
 
   return {
-    signature: signature,
-    hexSignature: w3.utils.soliditySha3({ t: 'string', v: signature})
+    string: signature,
+    name: signature.split('(')[0],
+    hex: hexSignature,
+    hexBytes4: hexSignature.slice(2, 10)
   };
 }
 
-module.exports = () => {
-  const eventProcessorTemplate = fs.readFileSync('./abi_processor/templates/event', 'utf8');
+function main() {
+  const eventProcessorTemplate = fs.readFileSync('./abi_processor/templates/event.js', 'utf8');
   const contractsToProcess = fs.readdirSync('./ETH/build/contracts/');
 
   const eventProcessorDir = './ETH/events/';
@@ -54,14 +57,19 @@ module.exports = () => {
     const contractDir = eventProcessorDir + '/' + contractContent.contractName;
     mkdirAsync(contractDir);
 
-    contractAbi.forEach((e)  => {
-      if (e.type === 'event') {
-        const signature = getSignature(e);
+    contractAbi.forEach((obj)  => {
+      if (obj.type === 'event') {
+        const signature = getSignature(obj);
         let eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
-        eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE*/').join(signature.signature);
-        eventProcessor = eventProcessor.split('/*EVENT_HEX_SIGNATURE*/').join(signature.hexSignature);
-        fs.writeFileSync(contractDir + '/' + signature.signature + '.js', eventProcessor);
+        eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE*/').join(signature.string);
+        eventProcessor = eventProcessor.split('/*EVENT_HEX_SIGNATURE*/').join(signature.hex);
+        eventProcessor = eventProcessor.split('/*EVENT_NAME*/').join(signature.name);
+        eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE_BYTES4*/').join(signature.hexBytes4);
+
+        fs.writeFileSync(contractDir + '/' + signature.name + '_' + signature.hexBytes4 + '.js', eventProcessor);
       }
     });
   });
-};
+}
+
+main();
