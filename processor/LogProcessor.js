@@ -49,7 +49,7 @@ function getName (event) {
   }
   signature += ')';
 
-  const hexSignature = w3Utils.w3.utils.soliditySha3({ t: 'string', v: signature});
+  const hexSignature = w3Utils.w3.eth.abi.encodeEventSignature(signature);
   const name = signature.split('(')[0];
   const hexBytes4 = hexSignature.slice(2, 10);
 
