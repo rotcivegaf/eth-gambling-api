@@ -13,6 +13,18 @@ const mkdirAsync = (dir) => {
 
 const w3 = new W3();
 
+function stringify(inputs) {
+  inputs = JSON.stringify(inputs);
+  if(inputs == '[]') return inputs;
+  inputs = inputs.replace(new RegExp('"', 'g'), '\'');
+  inputs = inputs.replace(new RegExp('\\[', 'g'), '[\n      ');
+  inputs = inputs.replace(new RegExp('\\{', 'g'), '{\n        ');
+  inputs = inputs.replace(new RegExp('\\}', 'g'), '\n      }');
+  inputs = inputs.replace(new RegExp('\\]', 'g'), '\n    ]');
+  inputs = inputs.replace(new RegExp('\\,\\{', 'g'), ',\n      {');
+  return inputs.replace(new RegExp('\\,\'', 'g'), ',\n        \'');
+}
+
 function getSignature (event) {
   let signature = event.name + '(';
   if (event.inputs.length > 0) {
@@ -22,7 +34,7 @@ function getSignature (event) {
     signature = signature.slice(0, -1);
   }
   signature += ')';
-  const hexSignature = w3.utils.soliditySha3({ t: 'string', v: signature});
+  const hexSignature = w3.eth.abi.encodeEventSignature(signature);
 
   return {
     string: signature,
@@ -62,6 +74,7 @@ function main() {
         const signature = getSignature(obj);
         let eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
         eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE*/').join(signature.string);
+        eventProcessor = eventProcessor.split('/*EVENT_INPUTS*/').join(stringify(obj.inputs));
         eventProcessor = eventProcessor.split('/*EVENT_HEX_SIGNATURE*/').join(signature.hex);
         eventProcessor = eventProcessor.split('/*EVENT_NAME*/').join(signature.name);
         eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE_BYTES4*/').join(signature.hexBytes4);

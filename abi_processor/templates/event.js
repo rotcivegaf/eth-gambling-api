@@ -5,9 +5,11 @@ module.exports = class /*EVENT_NAME*/_/*EVENT_SIGNATURE_BYTES4*/ extends Event {
   constructor() {
     super();
 
+    this.contract = /*CONTRACT_NAME*/;
+
     this.signature = '/*EVENT_SIGNATURE*/';
     this.hexSignature = '/*EVENT_HEX_SIGNATURE*/';
-    this.contract = /*CONTRACT_NAME*/;
+    this.inputs = /*EVENT_INPUTS*/;
   }
 
   async process(log) {
