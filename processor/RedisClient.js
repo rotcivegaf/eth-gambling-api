@@ -15,6 +15,27 @@ module.exports = class RedisClient {
     return setAsync(key, data);
   }
 
+  async arrayRemove(key, element) {
+    let userTokens = await this.getAsync(key);
+    userTokens = userTokens.split(',');
+
+    const index = userTokens.indexOf(element);
+    if (index !== -1)
+      userTokens.splice(index, 1);
+    else
+      console.error('The token not exists in the userTokens');
+
+    await this.setAsync(key, userTokens);
+  }
+
+  async arrayPush(key, element) {
+    let userTokens = await this.getAsync(key);
+    userTokens = userTokens === null ?  [] : userTokens.split(',');
+    userTokens.push(element);
+
+    await this.setAsync(key, userTokens);
+  }
+
   getClient() {
     // const client = require('redis').createClient(process.env.REDISCLOUD_URL);
     const client = redis.createClient('redis://rediscloud:e4dlo6FFSloasERWprVLWZBydeeqvkH0u@redis-18522.c16.us-east-1-2.ec2.cloud.redislabs.com:18522');
