@@ -1,4 +1,4 @@
-const processor = require('./processor/processor.js');
+const processor = require('./processor/index.js');
 const express = require('express');
 const path = require('path');
 

@@ -1,11 +1,12 @@
 const contracts = require('../ETH/contracts.js');
-const w3Utils = require('./w3Utils.js');
 
 module.exports = class LogProcessor {
-  constructor(logger) {
-    // This attr storage the process method of each events of the contracts
-    this.eventsContracts = initEventsContracts();
+  constructor(w3Utils, redisClient, logger) {
+    this.w3Utils = w3Utils;
+    this.redisClient = redisClient;
     this.logger = logger;
+    // This attr storage the process method of each events of the contracts
+    this.eventsContracts = this.initEventsContracts();
   }
 
   async process(log) {
@@ -13,45 +14,44 @@ module.exports = class LogProcessor {
     const contractName = contracts.getName(log.address);
 
     this.logger.log(contractName, event.signature);
-    console.log(log);
 
     return await event.process(log);
   }
-};
 
-function initEventsContracts () {
-  const eventsContracts = {};
+  initEventsContracts () {
+    const eventsContracts = {};
 
-  for (const contract of contracts.data) {
-    const events = {};
+    for (const contract of contracts.data) {
+      const events = {};
 
-    for (const obj of contract.abi) {
-      if (obj.type === 'event') {
-        const Event = require('../ETH/events/' + contract.name + '/' + getName(obj) + '.js');
-        const event = new Event();
-        events[event.hexSignature] = event;
+      for (const obj of contract.abi) {
+        if (obj.type === 'event') {
+          const Event = require('../ETH/events/' + contract.name + '/' + this.getName(obj) + '.js');
+          const event = new Event(this.w3Utils, this.redisClient);
+          events[event.hexSignature] = event;
+        }
       }
+
+      eventsContracts[contract.address] = events;
     }
 
-    eventsContracts[contract.address] = events;
+    return eventsContracts;
   }
 
-  return eventsContracts;
-}
+  getName (event) {
+    let signature = event.name + '(';
+    if (event.inputs.length > 0) {
+      event.inputs.forEach((input) => {
+        signature += input.type + ',';
+      });
+      signature = signature.slice(0, -1);
+    }
+    signature += ')';
 
-function getName (event) {
-  let signature = event.name + '(';
-  if (event.inputs.length > 0) {
-    event.inputs.forEach((input) => {
-      signature += input.type + ',';
-    });
-    signature = signature.slice(0, -1);
+    const hexSignature = this.w3Utils.w3.eth.abi.encodeEventSignature(signature);
+    const name = signature.split('(')[0];
+    const hexBytes4 = hexSignature.slice(2, 10);
+
+    return name + '_' + hexBytes4;
   }
-  signature += ')';
-
-  const hexSignature = w3Utils.w3.eth.abi.encodeEventSignature(signature);
-  const name = signature.split('(')[0];
-  const hexBytes4 = hexSignature.slice(2, 10);
-
-  return name + '_' + hexBytes4;
-}
+};

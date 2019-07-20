@@ -1,44 +1,30 @@
 const redis = require('redis');
-
-const env = require('../environment.js');
+const { promisify } = require('util');
 
 module.exports = class RedisClient {
   constructor() {
-    this.client = getClient();
+    this.client = this.getClient();
+    this.getAsync = promisify(this.client.get).bind(this.client);
   }
 
-  async set(key, data) {
-    await this.client.set(key, data, redis.print);
+  async setAsync(key, data) {
+    const setAsync = promisify(this.client.set).bind(this.client);
+    if(typeof data !== 'string')
+      data = data.toString();
+
+    return setAsync(key, data);
   }
 
-  async hmset(commit) {
-    await this.client.hmset(key, dataObject, redis.print);
-  }
+  getClient() {
+    // const client = require('redis').createClient(process.env.REDISCLOUD_URL);
+    const client = redis.createClient('redis://rediscloud:e4dlo6FFSloasERWprVLWZBydeeqvkH0u@redis-18522.c16.us-east-1-2.ec2.cloud.redislabs.com:18522');
 
-//client.hmset('frameworks', {
-//    'javascript': 'AngularJS',
-//    'css': 'Bootstrap',
-//    'node': 'Express'
-//});
-
-  async get(commit) {
-    await this.client.get('my test key', function (error, result) {
-      if (error) {
-        console.log(error);
-        throw error;
-      }
-      console.log('GET result ->' + result);
+    client.on('connect', function() {
+      console.log('Connected to Redis');
+      client.flushdb(); // To delete DB
+      console.log('DB deleted');
     });
+
+    return client;
   }
 };
-
-function getClient() {
-  const client = require('redis').createClient(process.env.REDISCLOUD_URL);
-
-  client.on('connect', function() {
-    console.log('Connected to Redis');
-    client.flushdb(); // To delete DB
-  });
-
-  return client;
-}
