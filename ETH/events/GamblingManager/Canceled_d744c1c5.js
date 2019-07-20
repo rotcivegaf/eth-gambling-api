@@ -2,8 +2,8 @@ const Event = require('../Event.js');
 const GamblingManager = require('../../build/contracts/GamblingManager.json');
 
 module.exports = class Canceled_d744c1c5 extends Event {
-  constructor() {
-    super();
+  constructor(w3Utils, redisClient) {
+    super(w3Utils, redisClient);
 
     this.contract = GamblingManager;
 

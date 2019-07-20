@@ -2,8 +2,8 @@ const Event = require('../Event.js');
 const CoinFlip = require('../../build/contracts/CoinFlip.json');
 
 module.exports = class Win_a8e5116b extends Event {
-  constructor() {
-    super();
+  constructor(w3Utils, redisClient) {
+    super(w3Utils, redisClient);
 
     this.contract = CoinFlip;
 
