@@ -29,17 +29,17 @@ module.exports = class Transfer_ddf252ad extends Event {
 
   async process(log) {
     const event = await this.decodeLog(log);
-    const erc721Id = this.numberToHex(event._tokenId);
+    const erc721Id = this.w3Utils.numberToHex(event._tokenId);
 
     if (event._from !== this.w3Utils.address0x) {
-      const keyRemove = this.concatKeys('user:' + event._from, 'tokens');
+      const keyRemove = ['user', event._from, 'tokens'].join(':');
       await this.redis.arrayRemove(keyRemove, erc721Id);
     } else {
       // TODO do something...
       // New Bet(ERC721)
     }
 
-    const keyPush = this.concatKeys('user:' + event._to, 'tokens');
+    const keyPush = ['user', event._from, 'tokens'].join(':');
     await this.redis.arrayPush(keyPush, erc721Id);
 
     return [log];

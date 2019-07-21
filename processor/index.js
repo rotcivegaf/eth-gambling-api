@@ -6,7 +6,7 @@ const Processor = require('./Processor.js');
 
 module.exports = async () => {
   const w3Utils = await new W3Utils();
-  const redisClient = await new RedisClient();
+  const redisClient = await new RedisClient(w3Utils);
   const logger = await new Logger();
   const logProcessor = await new LogProcessor(w3Utils, redisClient, logger);
   const processor = await new Processor(w3Utils, logProcessor, logger);

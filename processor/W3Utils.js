@@ -9,8 +9,14 @@ module.exports = class W3Utils {
     this.address0x = '0x0000000000000000000000000000000000000000';
 
     this.w3 = new W3(new W3.providers.HttpProvider(env.node));
+    this.isBN = this.w3.utils.isBN;
     this.getPastLogs = this.w3.eth.getPastLogs;
     this.getTransactionReceipt = this.w3.eth.getPastLogs;
     this.getBlock = this.w3.eth.getBlock;
+    this.numberToHex = this.w3.utils.numberToHex;
+  }
+
+  toBN(x) {
+    return new this.w3.utils.BN(x.toString());
   }
 };

@@ -2,7 +2,8 @@ const redis = require('redis');
 const { promisify } = require('util');
 
 module.exports = class RedisClient {
-  constructor() {
+  constructor(w3Utils) {
+    this.w3Utils = w3Utils;
     this.client = this.getClient();
     this.getAsync = promisify(this.client.get).bind(this.client);
   }
@@ -47,5 +48,28 @@ module.exports = class RedisClient {
     });
 
     return client;
+  }
+
+  async sub(key, value) {
+    value = this.w3Utils.toBN(value);
+
+    let userBalance = await this.getAsync(key);
+    userBalance = this.w3Utils.toBN(value);
+    userBalance = userBalance.sub(value);
+
+    if(userBalance.isNeg())
+      console.error('The balance never must be negative');
+
+    await this.setAsync(key, userBalance);
+  }
+
+  async add(key, value) {
+    value = this.w3Utils.toBN(value);
+
+    let userBalance = await this.getAsync(key);
+    userBalance = this.w3Utils.toBN(value);
+    userBalance = userBalance.add(value);
+
+    await this.setAsync(key, userBalance);
   }
 };
