@@ -21,7 +21,7 @@ module.exports = class SetURIProvider_8830bfff extends Event {
   async process(log) {
     const event = await this.decodeLog(log);
 
-    const key = 'URIProvider';
+    const key = [this.contract.name, 'URIProvider'].join(':');
     await this.redis.setAsync(key, event._uriProvider);
   }
 };
