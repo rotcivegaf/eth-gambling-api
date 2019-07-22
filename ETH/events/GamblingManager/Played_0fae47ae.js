@@ -39,6 +39,5 @@ module.exports = class Played_0fae47ae extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

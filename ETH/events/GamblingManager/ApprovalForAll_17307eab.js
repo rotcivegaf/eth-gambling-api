@@ -29,6 +29,5 @@ module.exports = class ApprovalForAll_17307eab extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

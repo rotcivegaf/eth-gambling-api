@@ -34,6 +34,5 @@ module.exports = class Canceled_d744c1c5 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

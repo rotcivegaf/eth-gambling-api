@@ -34,6 +34,5 @@ module.exports = class Lose_ff1ff7e8 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

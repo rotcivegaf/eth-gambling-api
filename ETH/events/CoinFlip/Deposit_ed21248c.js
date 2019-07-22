@@ -13,6 +13,5 @@ module.exports = class Deposit_ed21248c extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

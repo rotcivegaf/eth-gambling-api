@@ -39,6 +39,5 @@ module.exports = class Created2_74da9738 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

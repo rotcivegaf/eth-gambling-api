@@ -34,6 +34,5 @@ module.exports = class Win_a8e5116b extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

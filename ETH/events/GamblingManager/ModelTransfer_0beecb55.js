@@ -29,6 +29,5 @@ module.exports = class ModelTransfer_0beecb55 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

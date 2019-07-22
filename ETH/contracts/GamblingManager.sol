@@ -4,7 +4,7 @@
 pragma solidity ^0.5.0;
 
 
-contract ITipERC20 {
+interface ITipERC20 {
     event Tip(address indexed _from, address indexed _token, uint256 _amount);
 
     function tip(address _from, address _token, uint256 _amount) external payable;
@@ -543,12 +543,34 @@ contract ERC721Base is IERC721, ERC165 {
     }
 }
 
+// File: contracts/interfaces/IERC173.sol
+
+pragma solidity ^0.5.6;
+
+
+/// @title ERC-173 Contract Ownership Standard
+/// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md
+///  Note: the ERC-165 identifier for this interface is 0x7f5828d0
+interface IERC173 {
+    /// @dev This emits when ownership of a contract changes.
+    event OwnershipTransferred(address indexed _previousOwner, address indexed _newOwner);
+
+    /// @notice Get the address of the owner
+    /// @return The address of the owner.
+    function owner() view external;
+
+    /// @notice Set the address of the new owner of the contract
+    /// @param _newOwner The address of the new owner of the contract
+    function transferOwnership(address _newOwner) external;
+}
+
 // File: contracts/utils/Ownable.sol
 
 pragma solidity ^0.5.6;
 
 
-contract Ownable {
+
+contract Ownable is IERC173 {
     address public owner;
 
     modifier onlyOwner() {
@@ -558,17 +580,18 @@ contract Ownable {
 
     constructor() public {
         owner = msg.sender;
+        emit OwnershipTransferred(address(0x0), msg.sender);
     }
 
     /**
         @dev Transfers the ownership of the contract.
 
-        @param _to Address of the new owner
+        @param _newOwner Address of the new owner
     */
-    function transferTo(address _to) public onlyOwner returns (bool) {
-        require(_to != address(0), "0x0 Is not a valid owner");
-        owner = _to;
-        return true;
+    function transferOwnership(address _newOwner) external onlyOwner {
+        require(_newOwner != address(0), "0x0 Is not a valid owner");
+        emit OwnershipTransferred(owner, _newOwner);
+        owner = _newOwner;
     }
 }
 
@@ -972,6 +995,10 @@ contract GamblingManager is TipERC20, IdHelper, IGamblingManager, ERC721Base {
     mapping(bytes32 => Bet) public toBet;
 
     constructor() public ERC721Base("Ethereum Gambling Bets", "EGB") { }
+
+    function setURIProvider(URIProvider _provider) external onlyOwner {
+        _setURIProvider(_provider);
+    }
 
     function create(
         address _erc20,

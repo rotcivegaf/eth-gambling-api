@@ -24,6 +24,5 @@ module.exports = class SetMaxBetAmount_2f797d9e extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

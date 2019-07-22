@@ -1,29 +1,24 @@
 const Event = require('../Event.js');
 const GamblingManager = require('../../build/contracts/GamblingManager.json');
 
-module.exports = class Approval_8c5be1e5 extends Event {
+module.exports = class OwnershipTransferred_8be0079c extends Event {
   constructor(w3Utils, redisClient) {
     super(w3Utils, redisClient);
 
     this.contract = GamblingManager;
 
-    this.signature = 'Approval(address,address,uint256)';
-    this.hexSignature = '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925';
+    this.signature = 'OwnershipTransferred(address,address)';
+    this.hexSignature = '0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0';
     this.inputs = [
       {
         'indexed':true,
-        'name':'_owner',
+        'name':'_previousOwner',
         'type':'address'
       },
       {
         'indexed':true,
-        'name':'_approved',
+        'name':'_newOwner',
         'type':'address'
-      },
-      {
-        'indexed':true,
-        'name':'_tokenId',
-        'type':'uint256'
       }
     ];
   }

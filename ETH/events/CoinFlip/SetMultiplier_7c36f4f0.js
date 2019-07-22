@@ -24,6 +24,5 @@ module.exports = class SetMultiplier_7c36f4f0 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

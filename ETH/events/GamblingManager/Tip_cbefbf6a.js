@@ -29,6 +29,5 @@ module.exports = class Tip_cbefbf6a extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

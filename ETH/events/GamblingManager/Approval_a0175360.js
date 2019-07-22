@@ -34,6 +34,5 @@ module.exports = class Approval_a0175360 extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };
