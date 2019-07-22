@@ -8,10 +8,6 @@ module.exports = class Event {
     this.inputs = [];
   }
 
-  async process(log) {
-    return [log];
-  }
-
   async decodeLog(log) {
     return this.w3Utils.w3.eth.abi.decodeLog(this.inputs, log.data, log.topics.slice(1));
   }

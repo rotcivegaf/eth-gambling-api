@@ -13,6 +13,5 @@ module.exports = class /*EVENT_NAME*/_/*EVENT_SIGNATURE_BYTES4*/ extends Event {
   }
 
   async process(log) {
-    return [log];
   }
 };

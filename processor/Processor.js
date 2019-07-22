@@ -25,7 +25,7 @@ module.exports = class W3Utils {
         });
 
         for (const log of logs) {
-          const commit = await this.logProcessor.process(log);
+          await this.logProcessor.process(log);
 
           //await this.w3Utils.sleep(5000);
 
