@@ -24,7 +24,7 @@ module.exports = class RedisClient {
     if (index !== -1)
       userTokens.splice(index, 1);
     else
-      console.error('The token not exists in the userTokens');
+      throw new Error('The token not exists in the userTokens');
 
     await this.setAsync(key, userTokens);
   }
@@ -58,7 +58,7 @@ module.exports = class RedisClient {
     userBalance = userBalance.sub(value);
 
     if(userBalance.isNeg())
-      console.error('The balance never must be negative');
+      throw new Error('The balance never must be negative');
 
     await this.setAsync(key, userBalance);
   }
