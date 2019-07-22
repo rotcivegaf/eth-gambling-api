@@ -19,6 +19,9 @@ module.exports = class SetURIProvider_8830bfff extends Event {
   }
 
   async process(log) {
-    return [log];
+    const event = await this.decodeLog(log);
+
+    const key = 'URIProvider';
+    await this.redis.setAsync(key, event._uriProvider);
   }
 };

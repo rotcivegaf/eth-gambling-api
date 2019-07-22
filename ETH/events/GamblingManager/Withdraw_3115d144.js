@@ -34,6 +34,9 @@ module.exports = class Withdraw_3115d144 extends Event {
   }
 
   async process(log) {
-    return [log];
+    const event = await this.decodeLog(log);
+
+    const keySub = ['user', event._from, 'token', event._token].join(':');
+    await this.redis.sub(keySub, event._value);
   }
 };

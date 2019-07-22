@@ -41,7 +41,5 @@ module.exports = class Transfer_d1398bee extends Event {
 
     const keyAdd = ['user', event._to, 'token', event._token].join(':');
     await this.redis.add(keyAdd, event._value);
-
-    return [log];
   }
 };

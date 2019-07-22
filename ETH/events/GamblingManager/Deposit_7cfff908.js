@@ -34,6 +34,9 @@ module.exports = class Deposit_7cfff908 extends Event {
   }
 
   async process(log) {
-    return [log];
+    const event = await this.decodeLog(log);
+
+    const keyAdd = ['user', event._to, 'token', event._token].join(':');
+    await this.redis.add(keyAdd, event._value);
   }
 };

@@ -41,7 +41,5 @@ module.exports = class Transfer_ddf252ad extends Event {
 
     const keyPush = ['user', event._from, 'tokens'].join(':');
     await this.redis.arrayPush(keyPush, erc721Id);
-
-    return [log];
   }
 };
