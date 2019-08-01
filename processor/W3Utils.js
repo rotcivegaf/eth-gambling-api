@@ -16,7 +16,7 @@ module.exports = class W3Utils {
     this.numberToHex = this.w3.utils.numberToHex;
   }
 
-  toBN(x) {
+  bn(x) {
     return new this.w3.utils.BN(x.toString());
   }
 };
