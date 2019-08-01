@@ -1,7 +1,7 @@
 module.exports = {
   compilers: {
     solc: {
-      version: '0.5.6',
+      version: '0.5.10',
       docker: false,
       settings: {
         optimizer: {
@@ -10,6 +10,13 @@ module.exports = {
         },
         evmVersion: 'constantinople',
       },
+    },
+  },
+  networks: {
+    development: {
+      host: 'localhost',
+      port: 8545,
+      network_id: '*', // eslint-disable-line camelcase
     },
   },
 };
