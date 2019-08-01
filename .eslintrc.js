@@ -1,10 +1,18 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
-    },
     "extends": "eslint:recommended",
+    "env": {
+      "browser": true,
+      "es6": true,
+      "node": true,
+      "mocha": true,
+      "jest": true
+    },
+    "globals" : {
+      "artifacts": false,
+      "contract": false,
+      "assert": false,
+      "web3": false
+    },
     "parserOptions": {
         "ecmaVersion": 2018,
         "sourceType": "module"
