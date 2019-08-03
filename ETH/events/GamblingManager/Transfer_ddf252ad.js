@@ -21,6 +21,7 @@ module.exports = class Transfer_ddf252ad extends Event {
         'type':'address'
       },
       {
+        'indexed':true,
         'name':'_tokenId',
         'type':'uint256'
       }
