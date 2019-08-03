@@ -13,8 +13,8 @@ module.exports = class W3Utils {
       const lastBlock = await this.w3Utils.getBlock('latest');
 
       if(from >= lastBlock.number) { // dont have events
-        await this.w3Utils.sleep(env.wait);
         this.logger.wait(env.wait);
+        await this.w3Utils.sleep(env.wait);
       } else { // have events
         to = Math.abs(from - lastBlock.number) < env.interval ? lastBlock.number : from + env.interval;
 
