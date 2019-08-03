@@ -1,7 +1,7 @@
 
 // File: contracts/interfaces/IModel.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 interface IModel {
@@ -23,7 +23,7 @@ interface IModel {
 
 // File: contracts/interfaces/ITipERC20.sol
 
-pragma solidity ^0.5.0;
+pragma solidity ^0.5.10;
 
 
 interface ITipERC20 {
@@ -34,7 +34,7 @@ interface ITipERC20 {
 
 // File: contracts/interfaces/IGamblingManager.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 interface IGamblingManager {
@@ -94,7 +94,7 @@ interface IGamblingManager {
 
 // File: contracts/interfaces/IERC721.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 interface IERC721 {
@@ -116,7 +116,7 @@ interface IERC721 {
 
 // File: contracts/interfaces/IERC165.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 interface IERC165 {
@@ -131,7 +131,7 @@ interface IERC165 {
 
 // File: contracts/utils/ERC165.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -178,7 +178,7 @@ contract ERC165 is IERC165 {
 
 // File: contracts/utils/IsContract.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 library IsContract {
@@ -191,7 +191,7 @@ library IsContract {
 
 // File: contracts/utils/ERC721Base.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -545,7 +545,7 @@ contract ERC721Base is IERC721, ERC165 {
 
 // File: contracts/interfaces/IERC173.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 /// @title ERC-173 Contract Ownership Standard
@@ -557,7 +557,7 @@ interface IERC173 {
 
     /// @notice Get the address of the owner
     /// @return The address of the owner.
-    function owner() view external;
+    function owner() external view;
 
     /// @notice Set the address of the new owner of the contract
     /// @param _newOwner The address of the new owner of the contract
@@ -566,7 +566,7 @@ interface IERC173 {
 
 // File: contracts/utils/Ownable.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -597,7 +597,7 @@ contract Ownable is IERC173 {
 
 // File: contracts/interfaces/IBalanceManager.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 contract IBalanceManager {
@@ -625,7 +625,7 @@ contract IBalanceManager {
 
 // File: contracts/interfaces/IERC20.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 interface IERC20 {
@@ -639,7 +639,7 @@ interface IERC20 {
 
 // File: contracts/utils/SafeERC20.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -770,7 +770,7 @@ library SafeERC20 {
 
 // File: contracts/utils/BalanceManager.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -911,7 +911,7 @@ contract BalanceManager is IBalanceManager {
 
 // File: contracts/GamblingManager.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 
@@ -1169,7 +1169,7 @@ contract GamblingManager is TipERC20, IdHelper, IGamblingManager, ERC721Base {
  *      The library lets you concatenate, slice and type cast bytes arrays both in memory and storage.
  */
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 library BytesLib {
@@ -1585,7 +1585,7 @@ library BytesLib {
 
 // File: contracts/model/CoinFlip.sol
 
-pragma solidity ^0.5.6;
+pragma solidity ^0.5.10;
 
 
 

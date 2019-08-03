@@ -4,12 +4,12 @@ const CoinFlip = require('./build/contracts/CoinFlip.json');
 module.exports.data = [
   {
     name: 'GamblingManager',
-    address: '0x1654F07d008ba7b3683C575BDBC97C90d3c1AA6f',
+    address: '0x6373CDf57Bb87Ce77D02a437108456B458B98F03',
     abi: GamblingManager.abi
   },
   {
     name: 'CoinFlip',
-    address: '0xA6ff317b10b07360c56fA5B2B42F91C7B6b77E64',
+    address: '0xed709204B5d362eC21460878E9d191fB6746DfD2',
     abi: CoinFlip.abi
   },
 ];
