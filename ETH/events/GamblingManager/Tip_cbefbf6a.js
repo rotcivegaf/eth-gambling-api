@@ -29,5 +29,14 @@ module.exports = class Tip_cbefbf6a extends Event {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const keyPush = ['tip', 'token', event._token].join(':');
+    const valueObj = {
+      from: event._from,
+      amount: event._amount
+    };
+
+    await this.redis.arrayPush(keyPush, JSON.stringify(valueObj));
   }
 };
