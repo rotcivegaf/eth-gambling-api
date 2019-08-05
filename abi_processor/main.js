@@ -45,7 +45,8 @@ function getSignature (event) {
 }
 
 function main() {
-  const eventProcessorTemplate = fs.readFileSync('./abi_processor/templates/event.js', 'utf8');
+  const eventTemplate = fs.readFileSync('./abi_processor/templates/event.js', 'utf8');
+  const contractTemplate = fs.readFileSync('./abi_processor/templates/contract.js', 'utf8');
   const contractsToProcess = fs.readdirSync('./ETH/build/contracts/');
 
   const eventProcessorDir = './ETH/events/';
@@ -55,6 +56,7 @@ function main() {
     const contractPath = './ETH/build/contracts/' + contract;
     const contractContent = JSON.parse(fs.readFileSync(contractPath, 'utf8'));
     const contractAbi = contractContent.abi;
+    const contractNameFirstLowerCase = contractContent.contractName[0].toLowerCase() + contractContent.contractName.slice(1);
 
     if(
       contractContent.contractName.slice(0,4) === 'Test' ||
@@ -69,13 +71,21 @@ function main() {
     const contractDir = eventProcessorDir + '/' + contractContent.contractName;
     mkdirAsync(contractDir);
 
+    const contractJsDir = contractDir + '/' + contractContent.contractName + '.js';
+
+    if (!fs.existsSync(contractJsDir)){
+      const contract = contractTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
+      fs.writeFileSync(contractJsDir, contract);
+    }
+
     contractAbi.forEach((obj)  => {
       if (obj.type === 'event') {
         const signature = getSignature(obj);
         const eventDir = contractDir + '/' + signature.name + '_' + signature.hexBytes4 + '.js';
 
         if (!fs.existsSync(eventDir)){
-          let eventProcessor = eventProcessorTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
+          let eventProcessor = eventTemplate.split('/*CONTRACT_NAME*/').join(contractContent.contractName);
+          eventProcessor = eventProcessor.split('/*CONTRACT_NAME_FIRST_LOWER_CASE_LETTER*/').join(contractNameFirstLowerCase);
           eventProcessor = eventProcessor.split('/*EVENT_SIGNATURE*/').join(signature.string);
           eventProcessor = eventProcessor.split('/*EVENT_INPUTS*/').join(stringify(obj.inputs));
           eventProcessor = eventProcessor.split('/*EVENT_HEX_SIGNATURE*/').join(signature.hex);

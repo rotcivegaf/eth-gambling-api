@@ -1,11 +1,8 @@
-const Event = require('../Event.js');
-const /*CONTRACT_NAME*/ = require('../../build/contracts//*CONTRACT_NAME*/.json');
+const /*CONTRACT_NAME_FIRST_LOWER_CASE_LETTER*/ = require('.//*CONTRACT_NAME*/.js');
 
-module.exports = class /*EVENT_NAME*/_/*EVENT_SIGNATURE_BYTES4*/ extends Event {
+module.exports = class /*EVENT_NAME*/_/*EVENT_SIGNATURE_BYTES4*/ extends /*CONTRACT_NAME_FIRST_LOWER_CASE_LETTER*/ {
   constructor(w3Utils, redisClient) {
     super(w3Utils, redisClient);
-
-    this.contract = /*CONTRACT_NAME*/;
 
     this.signature = '/*EVENT_SIGNATURE*/';
     this.hexSignature = '/*EVENT_HEX_SIGNATURE*/';
