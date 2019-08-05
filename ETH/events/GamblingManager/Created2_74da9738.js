@@ -1,11 +1,8 @@
-const Event = require('../Event.js');
-const GamblingManager = require('../../build/contracts/GamblingManager.json');
+const gamblingManager = require('./GamblingManager.js');
 
-module.exports = class Created2_74da9738 extends Event {
+module.exports = class Created2_74da9738 extends gamblingManager {
   constructor(w3Utils, redisClient) {
     super(w3Utils, redisClient);
-
-    this.contract = GamblingManager;
 
     this.signature = 'Created2(address,bytes32,address,bytes,uint256)';
     this.hexSignature = '0x74da973888be896e232abd439b13097a4319d859b05de4bf9ecd2c9ab712cf56';
