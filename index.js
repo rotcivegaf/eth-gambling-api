@@ -1,12 +1,14 @@
-const processor = require('./processor/index.js');
-const express = require('express');
-const path = require('path');
+const RedisClient = require('./src/RedisClient.js');
+const W3Utils = require('./src/W3Utils.js');
+const Processor = require('./src/processor/Processor.js');
+const api = require('./src/api.js');
 
-const PORT = process.env.PORT || 5000;
+async function main() {
+  const w3Utils = await new W3Utils();
+  const redisClient = await new RedisClient(w3Utils);
 
-processor();
+  new Processor(w3Utils, redisClient).process();
+  api(redisClient);
+}
 
-express()
-  .use(express.static(path.join(__dirname, 'public')))
-  .get('/', (req, res) => res.send(console.log('bla')))
-  .listen(PORT, () => console.info(`Listening on ${ PORT }`));
+main();
