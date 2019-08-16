@@ -17,6 +17,6 @@ module.exports = class W3Utils {
   }
 
   bn(x) {
-    return new this.w3.utils.BN(x.toString());
+    return this.w3.utils.toBN(x);
   }
 };
