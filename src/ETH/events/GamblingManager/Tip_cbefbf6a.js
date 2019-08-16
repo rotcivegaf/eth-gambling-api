@@ -1,6 +1,6 @@
-const gamblingManager = require('./GamblingManager.js');
+const GamblingManager = require('./GamblingManager.js');
 
-module.exports = class Tip_cbefbf6a extends gamblingManager {
+module.exports = class Tip_cbefbf6a extends GamblingManager {
   constructor(w3Utils, redisClient) {
     super(w3Utils, redisClient);
 
