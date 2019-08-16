@@ -38,6 +38,6 @@ module.exports = class Transfer_ddf252ad extends GamblingManager {
     }
 
     const keyPush = ['user', event._from, 'bets'].join(':');
-    await this.redis.arrayPush(keyPush, erc721Id);
+    await this.redis.arrayPush(keyPush, erc721Id);// TODO test if the value storage as "HEX ... value"
   }
 };

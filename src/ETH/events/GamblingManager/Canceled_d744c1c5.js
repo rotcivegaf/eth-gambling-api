@@ -9,7 +9,7 @@ module.exports = class Canceled_d744c1c5 extends GamblingManager {
     this.inputs = [
       {
         'indexed':true,
-        'name':'_creator',
+        'name':'_sender',
         'type':'address'
       },
       {
@@ -31,5 +31,16 @@ module.exports = class Canceled_d744c1c5 extends GamblingManager {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const keyCancel = ['bet', event._id, 'cancel'].join(':');
+
+    const betCancelObj = {
+      sender: event._sender,
+      amount: event._amount.toString(),
+      data: event._data
+    };
+
+    await this.redis.setAsync(keyCancel, JSON.stringify(betCancelObj));
   }
 };

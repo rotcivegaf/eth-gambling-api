@@ -9,7 +9,7 @@ module.exports = class Collected_09c4f65d extends GamblingManager {
     this.inputs = [
       {
         'indexed':true,
-        'name':'_collecter',
+        'name':'_sender',
         'type':'address'
       },
       {
@@ -36,5 +36,17 @@ module.exports = class Collected_09c4f65d extends GamblingManager {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const keyCollect = ['bet', event._id, 'collects'].join(':');
+
+    const betCollect = {
+      sender: event._sender,
+      beneficiary: event._beneficiary,
+      amount: event._amount.toString(),
+      data: event._data
+    };
+
+    await this.redis.arrayPush(keyCollect, JSON.stringify(betCollect));
   }
 };

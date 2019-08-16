@@ -36,5 +36,17 @@ module.exports = class Played_0fae47ae extends GamblingManager {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const keyPlay = ['bet', event._id, 'plays'].join(':');
+
+    const betPlayObj = {
+      sender: event._sender,
+      player: event._player,
+      amount: event._amount.toString(),
+      data: event._data
+    };
+
+    await this.redis.arrayPush(keyPlay, JSON.stringify(betPlayObj));
   }
 };

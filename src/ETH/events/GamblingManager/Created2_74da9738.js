@@ -9,7 +9,7 @@ module.exports = class Created2_74da9738 extends GamblingManager {
     this.inputs = [
       {
         'indexed':true,
-        'name':'_creator',
+        'name':'_sender',
         'type':'address'
       },
       {
@@ -36,5 +36,17 @@ module.exports = class Created2_74da9738 extends GamblingManager {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const key = ['bet', event._id].join(':');
+    const betObj = {
+      sender: event._sender,
+      token: event._token,
+      data: event._data,
+      createTipe: 2,
+      nonce_salt: event._salt.toString()
+    };
+
+    await this.redis.setAsync(key, JSON.stringify(betObj));
   }
 };
