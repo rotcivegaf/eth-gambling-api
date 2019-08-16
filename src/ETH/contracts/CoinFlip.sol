@@ -39,7 +39,7 @@ pragma solidity ^0.5.10;
 
 interface IGamblingManager {
     event Created(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -47,7 +47,7 @@ interface IGamblingManager {
     );
 
     event Created2(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -55,7 +55,7 @@ interface IGamblingManager {
     );
 
     event Created3(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -71,7 +71,7 @@ interface IGamblingManager {
     );
 
     event Collected(
-        address indexed _collecter,
+        address indexed _sender,
         bytes32 indexed _id,
         address indexed _beneficiary,
         uint256 _amount,
@@ -79,7 +79,7 @@ interface IGamblingManager {
     );
 
     event Canceled(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         uint256 _amount,
         bytes _data
@@ -87,6 +87,7 @@ interface IGamblingManager {
 
     event ModelTransfer(
         bytes32 indexed _id,
+        address indexed _model,
         address indexed _beneficiary,
         uint256 _amount
     );
@@ -1136,7 +1137,7 @@ contract GamblingManager is TipERC20, IdHelper, IGamblingManager, ERC721Base {
         bet.balance -= _amount;
         _transfer(address(this), _beneficiary, bet.erc20, _amount);
 
-        emit ModelTransfer(_betId, _beneficiary, _amount);
+        emit ModelTransfer(_betId, address(bet.model), _beneficiary, _amount);
     }
 
     function _create(

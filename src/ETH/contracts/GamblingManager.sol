@@ -1,37 +1,23 @@
-/**
- *Submitted for verification at Etherscan.io on 2019-04-23
-*/
 
-pragma solidity ^0.5.6;
+// File: contracts/interfaces/ITipERC20.sol
+
+pragma solidity ^0.5.10;
 
 
-contract IBalanceManager {
-    event Transfer(address indexed _from, address indexed _to, address _token, uint256 _value);
-    event Approval(address indexed _owner, address indexed _spender, address _token, uint256 _value);
-    event Deposit(address indexed _from, address indexed _to, address _token, uint256 _value);
-    event Withdraw(address indexed _from, address indexed _to, address _token, uint256 _value);
+interface ITipERC20 {
+    event Tip(address indexed _from, address indexed _token, uint256 _amount);
 
-    address public constant ETH = 0x0000000000000000000000000000000000000000;
-
-    function totalSupply(address _token) external view returns (uint256 internalSupply);
-    function balanceOf(address _owner, address _token) external view returns (uint256 balance);
-    function allowance(address _owner, address _spender, address _token) external view returns (uint256 value);
-
-    function transfer(address _to, address _token, uint256 _value) external returns (bool success);
-    function transferFrom(address _from, address _to, address _token, uint256 _value) external returns (bool success);
-    function approve(address _spender, address _token, uint256 _value) external returns (bool success);
-
-    function deposit(address _to, address _token, uint256 _value) external payable;
-    function depositFrom(address _from, address _to, address _token, uint256 _value) external payable;
-
-    function withdraw(address payable _to, address _token, uint256 _value) external;
-    function withdrawFrom(address _from, address payable _to, address _token, uint256 _value) external;
+    function tip(address _from, address _token, uint256 _amount) external payable;
 }
+
+// File: contracts/interfaces/IGamblingManager.sol
+
+pragma solidity ^0.5.10;
 
 
 interface IGamblingManager {
     event Created(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -39,7 +25,7 @@ interface IGamblingManager {
     );
 
     event Created2(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -47,7 +33,7 @@ interface IGamblingManager {
     );
 
     event Created3(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         address _token,
         bytes _data,
@@ -63,7 +49,7 @@ interface IGamblingManager {
     );
 
     event Collected(
-        address indexed _collecter,
+        address indexed _sender,
         bytes32 indexed _id,
         address indexed _beneficiary,
         uint256 _amount,
@@ -71,7 +57,7 @@ interface IGamblingManager {
     );
 
     event Canceled(
-        address indexed _creator,
+        address indexed _sender,
         bytes32 indexed _id,
         uint256 _amount,
         bytes _data
@@ -79,16 +65,15 @@ interface IGamblingManager {
 
     event ModelTransfer(
         bytes32 indexed _id,
+        address indexed _model,
         address indexed _beneficiary,
         uint256 _amount
     );
 }
 
-contract ITipERC20 {
-    event Tip(uint256 _amount);
+// File: contracts/interfaces/IModel.sol
 
-    function tip(address _from, address _token, uint256 _amount) external payable;
-}
+pragma solidity ^0.5.10;
 
 
 interface IModel {
@@ -108,20 +93,14 @@ interface IModel {
     function simActualReturn(bytes32 _betId, bytes calldata _data) external view returns (uint256 returnAmount, bool canChange);
 }
 
+// File: contracts/interfaces/IERC721.sol
 
-interface IERC20 {
-    function transfer(address _to, uint _value) external returns (bool success);
-    function transferFrom(address _from, address _to, uint256 _value) external returns (bool success);
-    function allowance(address _owner, address _spender) external view returns (uint256 remaining);
-    function approve(address _spender, uint256 _value) external returns (bool success);
-    function increaseApproval (address _spender, uint _addedValue) external returns (bool success);
-    function balanceOf(address _owner) external view returns (uint256 balance);
-}
+pragma solidity ^0.5.10;
 
 
 interface IERC721 {
-    event Transfer(address indexed _from, address indexed _to, uint256 _tokenId);
-    event Approval(address indexed _owner, address indexed _approved, uint256 _tokenId);
+    event Transfer(address indexed _from, address indexed _to, uint256 indexed _tokenId);
+    event Approval(address indexed _owner, address indexed _approved, uint256 indexed _tokenId);
     event ApprovalForAll(address indexed _owner, address indexed _operator, bool _approved);
 
     function balanceOf(address _owner) external view returns (uint256);
@@ -136,6 +115,10 @@ interface IERC721 {
     function setApprovalForAll(address _operator, bool _approved) external;
 }
 
+// File: contracts/interfaces/IERC165.sol
+
+pragma solidity ^0.5.10;
+
 
 interface IERC165 {
     /// @notice Query if a contract implements an interface
@@ -146,6 +129,11 @@ interface IERC165 {
     ///  `interfaceID` is not 0xffffffff, `false` otherwise
     function supportsInterface(bytes4 interfaceID) external view returns (bool);
 }
+
+// File: contracts/utils/ERC165.sol
+
+pragma solidity ^0.5.10;
+
 
 
 /**
@@ -189,6 +177,10 @@ contract ERC165 is IERC165 {
     }
 }
 
+// File: contracts/utils/IsContract.sol
+
+pragma solidity ^0.5.10;
+
 
 library IsContract {
     function isContract(address _addr) internal view returns (bool) {
@@ -197,6 +189,13 @@ library IsContract {
         return size > 0;
     }
 }
+
+// File: contracts/utils/ERC721Base.sol
+
+pragma solidity ^0.5.10;
+
+
+
 
 
 interface URIProvider {
@@ -498,7 +497,7 @@ contract ERC721Base is IERC721, ERC165 {
         if (_doCheck && _to.isContract()) {
             // Perform check with the new safe call
             // onERC721Received(address,address,uint256,bytes)
-            (uint256 success, bytes32 result) = _noThrowCall(
+            (bool success, bytes4 result) = _noThrowCall(
                 _to,
                 abi.encodeWithSelector(
                     ERC721_RECEIVED,
@@ -509,7 +508,7 @@ contract ERC721Base is IERC721, ERC165 {
                 )
             );
 
-            if (success != 1 || result != ERC721_RECEIVED) {
+            if (!success || result != ERC721_RECEIVED) {
                 // Try legacy safe call
                 // onERC721Received(address,uint256,bytes)
                 (success, result) = _noThrowCall(
@@ -523,7 +522,7 @@ contract ERC721Base is IERC721, ERC165 {
                 );
 
                 require(
-                    success == 1 && result == ERC721_RECEIVED_LEGACY,
+                    success && result == ERC721_RECEIVED_LEGACY,
                     "Contract rejected the token"
                 );
             }
@@ -536,27 +535,43 @@ contract ERC721Base is IERC721, ERC165 {
     // Utilities
     //
 
-    function _noThrowCall(address _contract, bytes memory _data) internal returns (uint256 success, bytes32 result) {
-        assembly {
-            let x := mload(0x40)
+    function _noThrowCall(address _contract, bytes memory _data) internal returns (bool success, bytes4 result) {
+        bytes memory returnData;
+        (success, returnData) = _contract.call(_data);
 
-            success := call(
-                            gas,                  // Send all gas
-                            _contract,            // To addr
-                            0,                    // Send ETH
-                            add(0x20, _data),     // Input is data past the first 32 bytes
-                            mload(_data),         // Input size is the lenght of data
-                            x,                    // Store the ouput on x
-                            0x20                  // Output is a single bytes32, has 32 bytes
-                        )
-
-            result := mload(x)
-        }
+        if (returnData.length > 0)
+            result = abi.decode(returnData, (bytes4));
     }
 }
 
+// File: contracts/interfaces/IERC173.sol
 
-contract Ownable {
+pragma solidity ^0.5.10;
+
+
+/// @title ERC-173 Contract Ownership Standard
+/// @dev See https://github.com/ethereum/EIPs/blob/master/EIPS/eip-173.md
+///  Note: the ERC-165 identifier for this interface is 0x7f5828d0
+interface IERC173 {
+    /// @dev This emits when ownership of a contract changes.
+    event OwnershipTransferred(address indexed _previousOwner, address indexed _newOwner);
+
+    /// @notice Get the address of the owner
+    /// @return The address of the owner.
+    function owner() external view;
+
+    /// @notice Set the address of the new owner of the contract
+    /// @param _newOwner The address of the new owner of the contract
+    function transferOwnership(address _newOwner) external;
+}
+
+// File: contracts/utils/Ownable.sol
+
+pragma solidity ^0.5.10;
+
+
+
+contract Ownable is IERC173 {
     address public owner;
 
     modifier onlyOwner() {
@@ -566,19 +581,67 @@ contract Ownable {
 
     constructor() public {
         owner = msg.sender;
+        emit OwnershipTransferred(address(0x0), msg.sender);
     }
 
     /**
         @dev Transfers the ownership of the contract.
 
-        @param _to Address of the new owner
+        @param _newOwner Address of the new owner
     */
-    function transferTo(address _to) public onlyOwner returns (bool) {
-        require(_to != address(0), "0x0 Is not a valid owner");
-        owner = _to;
-        return true;
+    function transferOwnership(address _newOwner) external onlyOwner {
+        require(_newOwner != address(0), "0x0 Is not a valid owner");
+        emit OwnershipTransferred(owner, _newOwner);
+        owner = _newOwner;
     }
 }
+
+// File: contracts/interfaces/IBalanceManager.sol
+
+pragma solidity ^0.5.10;
+
+
+contract IBalanceManager {
+    event Transfer(address indexed _from, address indexed _to, address _token, uint256 _value);
+    event Approval(address indexed _owner, address indexed _spender, address _token, uint256 _value);
+    event Deposit(address indexed _from, address indexed _to, address _token, uint256 _value);
+    event Withdraw(address indexed _from, address indexed _to, address _token, uint256 _value);
+
+    address public constant ETH = 0x0000000000000000000000000000000000000000;
+
+    function totalSupply(address _token) external view returns (uint256 internalSupply);
+    function balanceOf(address _owner, address _token) external view returns (uint256 balance);
+    function allowance(address _owner, address _spender, address _token) external view returns (uint256 value);
+
+    function transfer(address _to, address _token, uint256 _value) external returns (bool success);
+    function transferFrom(address _from, address _to, address _token, uint256 _value) external returns (bool success);
+    function approve(address _spender, address _token, uint256 _value) external returns (bool success);
+
+    function deposit(address _to, address _token, uint256 _value) external payable;
+    function depositFrom(address _from, address _to, address _token, uint256 _value) external payable;
+
+    function withdraw(address payable _to, address _token, uint256 _value) external;
+    function withdrawFrom(address _from, address payable _to, address _token, uint256 _value) external;
+}
+
+// File: contracts/interfaces/IERC20.sol
+
+pragma solidity ^0.5.10;
+
+
+interface IERC20 {
+    function transfer(address _to, uint _value) external returns (bool success);
+    function transferFrom(address _from, address _to, uint256 _value) external returns (bool success);
+    function allowance(address _owner, address _spender) external view returns (uint256 remaining);
+    function approve(address _spender, uint256 _value) external returns (bool success);
+    function increaseApproval (address _spender, uint _addedValue) external returns (bool success);
+    function balanceOf(address _owner) external view returns (uint256 balance);
+}
+
+// File: contracts/utils/SafeERC20.sol
+
+pragma solidity ^0.5.10;
+
 
 
 /**
@@ -705,6 +768,13 @@ library SafeERC20 {
         return success;
     }
 }
+
+// File: contracts/utils/BalanceManager.sol
+
+pragma solidity ^0.5.10;
+
+
+
 
 
 contract BalanceManager is IBalanceManager {
@@ -840,6 +910,16 @@ contract BalanceManager is IBalanceManager {
     }
 }
 
+// File: contracts/GamblingManager.sol
+
+pragma solidity ^0.5.10;
+
+
+
+
+
+
+
 
 contract IdHelper {
     mapping(address => uint256) public nonces;
@@ -901,7 +981,7 @@ contract TipERC20 is BalanceManager, ITipERC20, Ownable {
         if (tansferAmount != 0)
             _transferFrom(_from, owner, _token, tansferAmount);
 
-        emit Tip(_amount);
+        emit Tip(_from, _token, _amount);
     }
 }
 
@@ -916,6 +996,10 @@ contract GamblingManager is TipERC20, IdHelper, IGamblingManager, ERC721Base {
     mapping(bytes32 => Bet) public toBet;
 
     constructor() public ERC721Base("Ethereum Gambling Bets", "EGB") { }
+
+    function setURIProvider(URIProvider _provider) external onlyOwner {
+        _setURIProvider(_provider);
+    }
 
     function create(
         address _erc20,
@@ -1053,7 +1137,7 @@ contract GamblingManager is TipERC20, IdHelper, IGamblingManager, ERC721Base {
         bet.balance -= _amount;
         _transfer(address(this), _beneficiary, bet.erc20, _amount);
 
-        emit ModelTransfer(_betId, _beneficiary, _amount);
+        emit ModelTransfer(_betId, address(bet.model), _beneficiary, _amount);
     }
 
     function _create(
