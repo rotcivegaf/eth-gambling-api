@@ -33,10 +33,10 @@ module.exports = class Transfer_d1398bee extends GamblingManager {
   async process(log) {
     const event = await this.decodeLog(log);
 
-    const keySub = ['user', event._from, 'token', event._token].join(':');
+    const keySub = ['user', event._from, 'token', event._token, 'balance'].join(':');
     await this.redis.sub(keySub, event._value.toString());
 
-    const keyAdd = ['user', event._to, 'token', event._token].join(':');
+    const keyAdd = ['user', event._to, 'token', event._token, 'balance'].join(':');
     await this.redis.add(keyAdd, event._value.toString());
   }
 };

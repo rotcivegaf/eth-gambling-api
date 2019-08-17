@@ -33,7 +33,7 @@ module.exports = class Deposit_7cfff908 extends GamblingManager {
   async process(log) {
     const event = await this.decodeLog(log);
 
-    const keyAdd = ['user', event._to, 'token', event._token].join(':');
+    const keyAdd = ['user', event._to, 'token', event._token, 'balance'].join(':');
     await this.redis.add(keyAdd, event._value.toString());
   }
 };
