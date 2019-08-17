@@ -31,5 +31,10 @@ module.exports = class Approval_a0175360 extends GamblingManager {
   }
 
   async process(log) {
+    const event = await this.decodeLog(log);
+
+    const key = ['user', event._owner, 'token', event._token, 'spender', event._spender, 'approval'].join(':');
+
+    await this.redis.setAsync(key, event._value);
   }
 };
