@@ -5,7 +5,9 @@ const api = require('./src/api.js');
 
 async function main() {
   const w3Utils = await new W3Utils();
-  const redisClient = await new RedisClient(w3Utils);
+  const redisClient = new RedisClient(w3Utils);
+  // Wait for redis connect
+  while (!redisClient.ready) await w3Utils.sleep(500);
 
   new Processor(w3Utils, redisClient).process();
   api(redisClient);
