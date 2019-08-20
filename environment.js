@@ -10,7 +10,7 @@ const nodes = {
 };
 
 module.exports = {
-  contractsAddresses: [
+  contractsAddresses: [ // TODO test if this works
     {
       key: 'GamblingManager',
       value: '0x2c9228335861B110D96959936cdb5F23526143D7'
