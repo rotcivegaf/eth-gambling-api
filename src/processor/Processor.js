@@ -7,6 +7,7 @@ const env = require('../../environment.js');
 module.exports = class W3Utils {
   constructor(w3Utils, redisClient) {
     this.w3Utils = w3Utils;
+    this.redisClient = redisClient;
     this.logger = new Logger();
     this.logProcessor = new LogProcessor(w3Utils, redisClient, this.logger);
   }
@@ -29,21 +30,11 @@ module.exports = class W3Utils {
 
         for (const log of logs) {
           await this.logProcessor.process(log);
-
-          //await this.w3Utils.sleep(5000);
-
-
-          //await redis.hmset(
-          //  contractName + ':' + logs[i].address + ':' + commit.key,
-          //  commit.dataObject
-          //);
-          //logger.commit(commit);
         }
 
-        //await redis.set('lastProcessBlock', to.toString());
+        await this.redisClient.setAsync('lastProcessBlock', to.toString());
         this.logger.processedBlocks(from, to);
         from = to;
-
       }
     }
   }
