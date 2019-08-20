@@ -3,6 +3,7 @@ const { promisify } = require('util');
 
 module.exports = class RedisClient {
   constructor(w3Utils) {
+    this.ready = false;
     this.w3Utils = w3Utils;
     this.client = this.getClient();
     this.getAsync = promisify(this.client.get).bind(this.client);
@@ -40,10 +41,12 @@ module.exports = class RedisClient {
   getClient() {
     const client = redis.createClient(process.environment.redisUrl);
 
+    const _this = this;
     client.on('connect', function() {
       console.log('Connected to Redis');
       client.flushdb(); // To delete DB
       console.log('DB deleted');
+      _this.ready = true;
     });
 
     return client;
