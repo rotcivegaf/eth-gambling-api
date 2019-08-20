@@ -2,7 +2,6 @@ const Logger = require('./Logger.js');
 const LogProcessor = require('./LogProcessor.js');
 
 const contracts = require('../ETH/contracts.js');
-const env = require('../../environment.js');
 
 module.exports = class W3Utils {
   constructor(w3Utils, redisClient) {
@@ -13,14 +12,14 @@ module.exports = class W3Utils {
   }
 
   async process() {
-    for (let from = env.startBlock, to = 0; ;) {
+    for (let from = process.environment.startBlock, to = 0; ;) {
       const lastBlock = await this.w3Utils.getBlock('latest');
 
       if(from >= lastBlock.number) { // dont have events
-        this.logger.wait(env.wait);
-        await this.w3Utils.sleep(env.wait);
+        this.logger.wait(process.environment.wait);
+        await this.w3Utils.sleep(process.environment.wait);
       } else { // have events
-        to = Math.abs(from - lastBlock.number) < env.interval ? lastBlock.number : from + env.interval;
+        to = Math.abs(from - lastBlock.number) < process.environment.interval ? lastBlock.number : from + process.environment.interval;
 
         const logs = await this.w3Utils.getPastLogs({
           fromBlock: from.toString(),

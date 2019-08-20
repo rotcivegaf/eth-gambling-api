@@ -38,8 +38,7 @@ module.exports = class RedisClient {
   }
 
   getClient() {
-    // const client = require('redis').createClient(process.env.REDISCLOUD_URL);
-    const client = redis.createClient('redis://rediscloud:e4dlo6FFSloasERWprVLWZBydeeqvkH0u@redis-18522.c16.us-east-1-2.ec2.cloud.redislabs.com:18522');
+    const client = redis.createClient(process.environment.redisUrl);
 
     client.on('connect', function() {
       console.log('Connected to Redis');
