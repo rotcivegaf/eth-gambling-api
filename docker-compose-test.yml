@@ -22,3 +22,12 @@ services:
       - redis
     command:
       node index.js -e test
+
+  test-gambling-manager:
+    build: ./
+    depends_on:
+      - ganachecli
+      - redis
+      - processor
+    command:
+      node ./src/test/TestGamblingManager.js
