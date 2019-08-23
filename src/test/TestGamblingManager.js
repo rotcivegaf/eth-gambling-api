@@ -17,10 +17,14 @@ function toHexBytes32 (number) {
 async function main() {
   const pks = await Helper.getPrivateKeys();
   const accounts = Helper.instanceAccounts(pks);
-  const testToken = await Helper.deploy(TestERC20);
-  const gamblingManager = await Helper.deploy(GamblingManager);
-  const coinFlip = await Helper.deploy(CoinFlip, { args: [gamblingManager._address] });
 
+  console.log('Deploy contrats');
+  const testToken = await Helper.deploy(TestERC20);
+  console.log('TestToken: ' + testToken._address);
+  const gamblingManager = await Helper.deploy(GamblingManager);
+  console.log('GamblingManager: ' + gamblingManager._address);
+  const coinFlip = await Helper.deploy(CoinFlip, { args: [gamblingManager._address] });
+  console.log('CoinFlip: ' + coinFlip._address);
 
 
   const firstOwner = accounts[0];

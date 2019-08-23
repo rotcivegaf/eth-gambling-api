@@ -10,8 +10,11 @@ module.exports = class W3Utils {
     this.isBN = this.w3.utils.isBN;
     this.getPastLogs = this.w3.eth.getPastLogs;
     this.getTransactionReceipt = this.w3.eth.getPastLogs;
-    this.getBlock = this.w3.eth.getBlock;
     this.numberToHex = this.w3.utils.numberToHex;
+  }
+
+  async getBlock(x) {
+    return this.w3.eth.getBlock(x).catch(e => console.log(e));
   }
 
   bn(x) {

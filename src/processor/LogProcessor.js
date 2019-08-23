@@ -1,5 +1,3 @@
-const contracts = require('../ETH/contracts.js');
-
 module.exports = class LogProcessor {
   constructor(w3Utils, redisClient, logger) {
     this.w3Utils = w3Utils;
@@ -10,8 +8,9 @@ module.exports = class LogProcessor {
   }
 
   async process(log) {
+    console.log(this.eventsContracts);
     const event = this.eventsContracts[log.address][log.topics[0]];
-    const contractName = contracts.getName(log.address);
+    const contractName = process.environment.contracts.find(c => c.address === log.address).name;
 
     this.logger.log(contractName, event.signature);
 
@@ -19,15 +18,16 @@ module.exports = class LogProcessor {
   }
 
   initEventsContracts () {
-    const eventsContracts = {};
+    const eventsContracts = [];
 
-    for (const contract of contracts.data) {
-      const events = {};
+    for (let contract of process.environment.contracts) {
+      const events = [];
 
-      for (const obj of contract.abi) {
+      for (let obj of contract.abi) {
         if (obj.type === 'event') {
           const Event = require('../ETH/events/' + contract.name + '/' + this.getName(obj) + '.js');
           const event = new Event(this.w3Utils, this.redisClient);
+
           events[event.hexSignature] = event;
         }
       }
