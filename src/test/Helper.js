@@ -46,7 +46,7 @@ module.exports.instanceAccounts = (pks) => {
 
 module.exports.deploy = async (Contract, data = { args: [] }) => {
   if (data.sender === undefined) data.sender = w3.eth.accounts.wallet[0].address;
-  let contract = new w3.eth.Contract(Contract.abi);
+  const contract = new w3.eth.Contract(Contract.abi);
   const deploy = contract.deploy({ data: Contract.bytecode, arguments: data.args });
   const gas = await deploy.estimateGas((err, _gas) => { return _gas; });
 
