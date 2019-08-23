@@ -19,9 +19,13 @@ async function main() {
   process.environment = env[program.environment];
 
   const w3Utils = await new W3Utils();
+  console.log('Connect Web3 to ' + w3Utils.w3.currentProvider.host);
   const redisClient = new RedisClient(w3Utils);
   // Wait for redis connect
-  while (!redisClient.ready) await w3Utils.sleep(500);
+  while (!redisClient.ready) {
+    await w3Utils.sleep(500);
+    console.log('Wait: ' + 500 + ' ms for redis');
+  }
 
   new Processor(w3Utils, redisClient).process();
   api(redisClient);
