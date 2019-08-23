@@ -8,7 +8,6 @@ module.exports = class LogProcessor {
   }
 
   async process(log) {
-    console.log(this.eventsContracts);
     const event = this.eventsContracts[log.address][log.topics[0]];
     const contractName = process.environment.contracts.find(c => c.address === log.address).name;
 

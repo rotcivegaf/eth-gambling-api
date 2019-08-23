@@ -8,7 +8,6 @@ module.exports = class W3Utils {
     this.logger = new Logger();
 
     this.logProcessor = new LogProcessor(w3Utils, redisClient, this.logger);
-    console.log('222');
   }
 
   async process() {
