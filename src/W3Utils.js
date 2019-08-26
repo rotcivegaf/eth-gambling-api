@@ -14,7 +14,15 @@ module.exports = class W3Utils {
   }
 
   async getBlock(x) {
-    return this.w3.eth.getBlock(x).catch(e => console.log(e));
+    let block = await this.w3.eth.getBlock(x).catch(e => console.log(e));
+
+    if(block === undefined) {
+      console.log('Wait 500 ms for getBlock Error');
+      await this.sleep(500);
+      block = await this.getBlock();
+    }
+
+    return block;
   }
 
   bn(x) {
