@@ -26,6 +26,7 @@ async function main() {
     await w3Utils.sleep(500);
     console.log('Wait: ' + 500 + ' ms for redis');
   }
+  await redisClient.setAsync('lastProcessBlock', 0);
 
   new Processor(w3Utils, redisClient).process();
   api(redisClient);
