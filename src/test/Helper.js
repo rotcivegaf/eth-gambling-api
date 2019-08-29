@@ -1,11 +1,16 @@
-const W3 = require('web3');
 const bip39 = require('bip39');
 const hdkey = require('ethereumjs-wallet/hdkey');
+const requester = require('./requester.js');
+
+const W3Utils = require('../W3Utils.js');
 
 const env = require('../../environment.js');
 
-process.web3 = new W3(new W3.providers.HttpProvider(env.test.node));
-const w3 = process.web3;
+process.environment = env['test'];
+
+process.w3Utils = new W3Utils();
+const w3 = process.w3Utils.w3;
+process.requester = requester;
 
 module.exports.ETH = w3.utils.padLeft('0x0', 40);
 module.exports.address0x = w3.utils.padLeft('0x0', 40);
@@ -60,4 +65,12 @@ module.exports.sendTxCheckEvent = async (Contract, methodName, eventName, sender
   const tx = await method.send({ from: sender, gas: 4000000, value: value });
 
   if (!tx.events[eventName]) throw new Error('Error: The event dont find');
+
+  const actualBlock = process.w3Utils.bn(tx.blockNumber);
+  let lastProcessBlock = await requester.getLastProcessBlock();
+
+  while(lastProcessBlock.lte(actualBlock)) {
+    await process.w3Utils.sleep(1000);
+    lastProcessBlock = await requester.getLastProcessBlock();
+  }
 };

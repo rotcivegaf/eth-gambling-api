@@ -4,10 +4,12 @@ const TestERC20 = require('../ETH/build/contracts/test/TestERC20.json');
 const GamblingManager = require('../ETH/build/contracts/GamblingManager.json');
 const CoinFlip = require('../ETH/build/contracts/CoinFlip.json');
 
-const w3 = process.web3;
+const w3 = process.w3Utils.w3;
+const requester = process.requester;
+const assert = require('chai').assert;
 
 function bn (number) {
-  return web3.utils.toBN(number);
+  return w3.utils.toBN(number);
 }
 
 function toHexBytes32 (number) {
@@ -26,7 +28,6 @@ async function main() {
   const coinFlip = await Helper.deploy(CoinFlip, { args: [gamblingManager._address] });
   console.log('CoinFlip: ' + coinFlip._address);
 
-
   const firstOwner = accounts[0];
   const owner = accounts[1];
   // const creator = accounts[2];
@@ -38,9 +39,9 @@ async function main() {
   // Contract Ownable
   // event OwnershipTransferred(address,address)
   await Helper.sendTxCheckEvent(gamblingManager, 'transferOwnership', 'OwnershipTransferred', firstOwner, [owner]);
-  //console.log(tx);
-
-
+  const gamblingManagerOwner = await requester.getGamblingManager('owner');
+  console.log(gamblingManagerOwner);
+  assert.equal(gamblingManagerOwner, owner);
 
   //await Helper.sendTxCheckEvent(gamblingManager, 'tip', 'Tip', firstOwner, [owner, Helper.ETH, 1], 1);
 }
