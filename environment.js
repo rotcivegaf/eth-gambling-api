@@ -35,7 +35,7 @@ module.exports = {
   main: {
     contracts: addAddresses('???'),
     redisUrl: process.env.REDISCLOUD_URL,
-    node: nodes.infura.mainnet,
+    nodeEth: nodes.infura.mainnet,
     interval: 5000,
     startBlock: '???',
     wait: 29000
@@ -43,17 +43,18 @@ module.exports = {
   ropsten: {
     contracts: addAddresses(contractsAddressesRopsten),
     redisUrl: process.env.REDISCLOUD_URL,
-    node: nodes.infura.ropsten,
+    nodeEth: nodes.infura.ropsten,
     interval: 5000,
     startBlock: 6115511,
-    wait: 5000
+    wait: 29000
   },
   test: {
     contracts: addAddresses(contractsAddressesTest),
     redisUrl: '//redis:6379',
-    node: 'http://ganachecli:8545',
+    nodeEth: 'http://ganachecli:8545',
+    apiUrl: 'http://processor:5000',
     mnemonic: '0',
-    interval: 50,
+    interval: 1,
     startBlock: 0,
     wait: 5000,
   }
