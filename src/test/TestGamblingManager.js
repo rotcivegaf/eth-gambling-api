@@ -39,11 +39,13 @@ async function main() {
   // Contract Ownable
   // event OwnershipTransferred(address,address)
   await Helper.sendTxCheckEvent(gamblingManager, 'transferOwnership', 'OwnershipTransferred', firstOwner, [owner]);
-  const gamblingManagerOwner = await requester.getGamblingManager('owner');
-  console.log(gamblingManagerOwner);
+  const gamblingManagerOwner = await requester.get('/gamblingManager/owner');
   assert.equal(gamblingManagerOwner, owner);
-
-  //await Helper.sendTxCheckEvent(gamblingManager, 'tip', 'Tip', firstOwner, [owner, Helper.ETH, 1], 1);
+  // event Tip(address,address,uint256), with ETH
+  await Helper.sendTxCheckEvent(gamblingManager, 'tip', 'Tip', firstOwner, [owner, Helper.ETH, 1], 1);
+  await Helper.sendTxCheckEvent(gamblingManager, 'tip', 'Tip', firstOwner, [owner, Helper.ETH, 1], 1);
+  const tips = await requester.getAsObj('/tip/' + Helper.ETH);
+  console.log(tips);
 }
 
 main();

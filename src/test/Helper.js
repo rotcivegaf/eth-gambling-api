@@ -67,10 +67,11 @@ module.exports.sendTxCheckEvent = async (Contract, methodName, eventName, sender
   if (!tx.events[eventName]) throw new Error('Error: The event dont find');
 
   const actualBlock = process.w3Utils.bn(tx.blockNumber);
-  let lastProcessBlock = await requester.getLastProcessBlock();
+  let lastProcessBlock = await requester.getAsBN('/lastProcessBlock');
 
-  while(lastProcessBlock.lte(actualBlock)) {
-    await process.w3Utils.sleep(1000);
-    lastProcessBlock = await requester.getLastProcessBlock();
+  while(lastProcessBlock.lt(actualBlock)) {
+    await process.w3Utils.sleep(2000);
+    lastProcessBlock = await requester.getAsBN('/lastProcessBlock');
   }
+  console.log('sync to block: ' + lastProcessBlock);
 };

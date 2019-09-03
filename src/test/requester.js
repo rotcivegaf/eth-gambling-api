@@ -9,29 +9,21 @@ function bn(x) {
 }
 
 async function consult (dir) {
-  var options = {
-    //method: 'POST',
-    uri: apiUrl + dir,
-    //body: {
-    //  some: 'payload'
-    //},
-    json: true // Automatically stringifies the body to JSON
-  };
-
-  const resp = await rp(options);
+  const resp = await rp({ uri: apiUrl + dir, json: true });
   if (resp === null) throw new Error('The responce its null');
-  console.log(resp);
-  console.log(resp.toString());
-  console.log(resp[0]);
-  console.log(resp[1]);
-  console.log(resp[2]);
   return resp;
 }
 
-module.exports.getLastProcessBlock = async () => {
-  return bn(await consult('/lastProcessBlock'));
+module.exports.get = async (uri) => {
+  return consult(uri);
 };
 
-module.exports.getGamblingManager = async (data) => {
-  return consult('/gamblingManager/' + data);
+module.exports.getAsBN = async (uri) => {
+  return bn(await this.get(uri));
+};
+
+module.exports.getAsObj = async (uri) => {
+  console.log(await this.get(uri));
+  console.log((await this.get(uri)).toString());
+  return JSON.parse((await this.get(uri)).toString());
 };
