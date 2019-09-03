@@ -31,11 +31,14 @@ module.exports = class RedisClient {
   }
 
   async arrayPush(key, element) {
-    let userTokens = await this.getAsync(key);
-    userTokens = userTokens === null ?  [] : userTokens.split(',');
-    userTokens.push(element);
+    //let elements = await this.getAsync(key);
+    //elements = elements === null ?  [] : elements.split(',');
+    //elements.push(element);
 
-    await this.setAsync(key, userTokens);
+    //await this.setAsync(key, elements);
+    // TODO FIX
+    const rpush = promisify(this.client.set).bind(this.client);
+    await rpush(key, element);
   }
 
   getClient() {
