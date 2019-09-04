@@ -37,7 +37,7 @@ module.exports = class RedisClient {
 
     //await this.setAsync(key, elements);
     // TODO FIX
-    const rpush = promisify(this.client.set).bind(this.client);
+    const rpush = promisify(this.client.rpush).bind(this.client);
     await rpush(key, element);
   }
 
