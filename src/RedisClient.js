@@ -59,7 +59,7 @@ module.exports = class RedisClient {
     value = this.w3Utils.bn(value);
 
     let userBalance = await this.getAsync(key);
-    userBalance = this.w3Utils.bn(value);
+    userBalance = this.w3Utils.bn(userBalance);
     userBalance = userBalance.sub(value);
 
     if(userBalance.isNeg())
@@ -72,9 +72,9 @@ module.exports = class RedisClient {
     value = this.w3Utils.bn(value);
 
     let userBalance = await this.getAsync(key);
-    userBalance = this.w3Utils.bn(value);
+    userBalance = userBalance ? userBalance : 0;
+    userBalance = this.w3Utils.bn(userBalance);
     userBalance = userBalance.add(value);
-
     await this.setAsync(key, userBalance);
   }
 };
