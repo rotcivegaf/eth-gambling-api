@@ -16,7 +16,7 @@ async function main() {
 
   program.parse(process.argv);
 
-  process.environment = env[program.environment];
+  process.environment = env[program.environment ? program.environment : main];
 
   const w3Utils = await new W3Utils();
   console.log('Connect Web3 to ' + w3Utils.w3.currentProvider.host);
