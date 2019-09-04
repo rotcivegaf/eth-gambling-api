@@ -24,8 +24,8 @@ const contracts = [
 ];
 
 const contractsAddressesRopsten = [];
-contractsAddressesRopsten['GamblingManager'] = '0x2c9228335861B110D96959936cdb5F23526143D7';
-contractsAddressesRopsten['CoinFlip'] = '0x9C8Ac8eF8bdB21f212CFE8CAdfbe5442DCD336Ec';
+contractsAddressesRopsten['GamblingManager'] = '0x05970e00BF12d59EF86dBFCc20a7318F985F8df7';
+contractsAddressesRopsten['CoinFlip'] = '0xD6194d28061edCe3bA9d9A5E2933a2bECAF63829';
 
 const contractsAddressesTest = [];
 contractsAddressesTest['GamblingManager'] = '0x3C07FaA16fB56381eD3d1c704061746Bbd115Dd3';
@@ -42,10 +42,10 @@ module.exports = {
   },
   ropsten: {
     contracts: addAddresses(contractsAddressesRopsten),
-    redisUrl: process.env.REDISCLOUD_URL,
+    redisUrl: '//localhost:6379',
     nodeEth: nodes.infura.ropsten,
-    interval: 5000,
-    startBlock: 6115511,
+    interval: 10000,
+    startBlock: 6323134,
     wait: 29000
   },
   test: {
@@ -60,7 +60,7 @@ module.exports = {
   }
 };
 
-function addAddresses(addresses){
+function addAddresses(addresses) {
   for (let i = 0; i < contracts.length; i++)
     contracts[i].address = addresses[contracts[i].name];
   return contracts;
