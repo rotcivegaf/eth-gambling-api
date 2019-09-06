@@ -42,7 +42,7 @@ module.exports = {
   },
   ropsten: {
     contracts: addAddresses(contractsAddressesRopsten),
-    redisUrl: '//localhost:6379',
+    redisUrl: process.env.REDISCLOUD_URL,// '//localhost:6379',
     nodeEth: nodes.infura.ropsten,
     interval: 10000,
     startBlock: 6323134,
