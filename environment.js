@@ -47,7 +47,7 @@ module.exports = {
     interval: 10000,
     startBlock: 6323134,
     wait: 29000
-  },
+  }/*,
   test: {
     contracts: addAddresses(contractsAddressesTest),
     redisUrl: '//redis:6379',
@@ -57,7 +57,7 @@ module.exports = {
     interval: 1,
     startBlock: 0,
     wait: 5000,
-  }
+  }*/
 };
 
 function addAddresses(addresses) {
