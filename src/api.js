@@ -3,6 +3,8 @@ const cors = require('cors');
 
 const PORT = process.env.PORT || 5000;
 
+const bytes32AllCaraters = '??????????????????????????????????????????????????????????????????'
+
 module.exports = async (redis) => {
   const app = express();
   app.use(cors());
@@ -17,6 +19,20 @@ module.exports = async (redis) => {
   // TIP ERC20
   app.get('/tip/:token', (req, res) => {
     const key = ['tip', 'token', req.params.token].join(':');
+    redis.getAsync(key).then(response => {
+      return res.json(response);
+    }).catch(logE);
+  });
+  // Currencies
+  app.get('/currencies/users', (req, res) => {
+    const key = ['user', '*', 'balance'].join(':');
+    redis.getAsync(key).then(response => {
+      return res.json(response);
+    }).catch(logE);
+  });
+  // Bets
+  app.get('/bets', (req, res) => {
+    const key = ['bet', bytes32AllCaraters].join(':');
     redis.getAsync(key).then(response => {
       return res.json(response);
     }).catch(logE);
