@@ -24,7 +24,7 @@ module.exports = async (redis) => {
     }).catch(logE);
   });
   // Currencies
-  app.get('/currencies/users', (req, res) => {
+  app.get('/currencies', (req, res) => {
     const key = ['user', '*', 'balance'].join(':');
     redis.getAsync(key).then(response => {
       return res.json(response);
