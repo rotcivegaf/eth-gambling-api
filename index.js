@@ -29,7 +29,7 @@ async function main() {
   await redisClient.setAsync('lastProcessBlock', 0);
 
   new Processor(w3Utils, redisClient).process();
-  api(redisClient);
+  api(w3Utils, redisClient);
 }
 
 main();

@@ -13,7 +13,7 @@ module.exports = class W3Utils {
     this.numberToHex = this.w3.utils.numberToHex;
   }
 
-  async getBlock(x) {
+  async getBlock(x = 'latest') {
     let block = await this.w3.eth.getBlock(x).catch(e => console.log(e));
 
     if(block === undefined) {

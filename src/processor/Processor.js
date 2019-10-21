@@ -22,7 +22,7 @@ module.exports = class W3Utils {
     let lastBlock;
 
     for (let from = startBlock, to = 0; ;) {
-      lastBlock = await this.w3Utils.getBlock('latest');
+      lastBlock = await this.w3Utils.getBlock();
 
       if(from >= lastBlock.number) { // dont have events
         this.logger.wait(wait);

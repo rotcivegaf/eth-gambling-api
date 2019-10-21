@@ -5,10 +5,22 @@ const PORT = process.env.PORT || 5000;
 
 const bytes32AllCaraters = '??????????????????????????????????????????????????????????????????';
 
-module.exports = async (redis) => {
+module.exports = async (w3Utils, redis) => {
   const app = express();
   app.use(cors());
   app.listen(PORT, () => console.info(`Listening on ${ PORT }`));
+  // Root
+  app.get('/', async (req, res) => {
+    const key = 'lastProcessBlock';
+    const lastBlock = w3Utils.bn(await w3Utils.getBlock());
+
+    let lastProcessBlock;
+    redis.getAsync(key).then(response => {
+      lastProcessBlock = w3Utils.bn(res.json(response));
+    }).catch(logE);
+
+    return (lastProcessBlock - lastBlock) <= w3Utils.bn(12);
+  });
   // Last process block
   app.get('/lastProcessBlock', (req, res) => {
     const key = 'lastProcessBlock';
