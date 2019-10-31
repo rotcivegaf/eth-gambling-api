@@ -34,6 +34,6 @@ module.exports = class Tip_cbefbf6a extends GamblingManager {
       amount: event._amount.toString()
     };
 
-    await this.redis.arrayPush(keyPush, JSON.stringify(valueObj));
+    await this.redis.rpushAsync(keyPush, JSON.stringify(valueObj));
   }
 };

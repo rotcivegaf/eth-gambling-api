@@ -47,6 +47,6 @@ module.exports = class Played_0fae47ae extends GamblingManager {
       data: event._data
     };
 
-    await this.redis.arrayPush(keyPlay, JSON.stringify(betPlayObj));
+    await this.redis.rpushAsync(keyPlay, JSON.stringify(betPlayObj));
   }
 };

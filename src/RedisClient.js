@@ -6,7 +6,15 @@ module.exports = class RedisClient {
     this.ready = false;
     this.w3Utils = w3Utils;
     this.client = this.getClient();
+
+    this.existsAsync = promisify(this.client.exists).bind(this.client);
     this.getAsync = promisify(this.client.get).bind(this.client);
+    this.getKeysAsync = promisify(this.client.keys).bind(this.client);
+    this.hgetAsync = promisify(this.client.hget).bind(this.client);
+    this.lrangeAsync = promisify(this.client.lrange).bind(this.client);
+
+    this.rpushAsync = promisify(this.client.rpush).bind(this.client);
+    this.lremAsync = promisify(this.client.lrem).bind(this.client);
   }
 
   async setAsync(key, data) {
@@ -17,28 +25,19 @@ module.exports = class RedisClient {
     return setAsync(key, data);
   }
 
-  async arrayRemove(key, element) {
-    let userTokens = await this.getAsync(key);
-    userTokens = userTokens.split(',');
+  async hsetAsync(key, field, data) {
+    const hsetAsync = promisify(this.client.hset).bind(this.client);
+    if(typeof data !== 'string')
+      data = data.toString();
 
-    const index = userTokens.indexOf(element);
-    if (index !== -1)
-      userTokens.splice(index, 1);
-    else
-      throw new Error('The token not exists in the userTokens');
-
-    await this.setAsync(key, userTokens);
+    return hsetAsync(key, field, data);
   }
 
-  async arrayPush(key, element) {
-    //let elements = await this.getAsync(key);
-    //elements = elements === null ?  [] : elements.split(',');
-    //elements.push(element);
+  async arrayUniquePush(key, element) {
+    if ((await this.existsAsync(key)) != 0)
+      await this.lremAsync(key, 0, element);
 
-    //await this.setAsync(key, elements);
-    // TODO FIX
-    const rpush = promisify(this.client.rpush).bind(this.client);
-    await rpush(key, element);
+    await this.rpushAsync(key, element);
   }
 
   getClient() {

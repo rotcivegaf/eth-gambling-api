@@ -47,6 +47,6 @@ module.exports = class Collected_09c4f65d extends GamblingManager {
       data: event._data
     };
 
-    await this.redis.arrayPush(keyCollect, JSON.stringify(betCollect));
+    await this.redis.rpushAsync(keyCollect, JSON.stringify(betCollect));
   }
 };

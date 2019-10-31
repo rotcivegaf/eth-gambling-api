@@ -48,5 +48,6 @@ module.exports = class Created3_8ea26732 extends GamblingManager {
     };
 
     await this.redis.setAsync(key, JSON.stringify(betObj));
+    await this.redis.arrayUniquePush('currencies', event._token);
   }
 };
