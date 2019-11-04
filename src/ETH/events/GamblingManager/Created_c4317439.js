@@ -2,8 +2,8 @@ const GamblingManager = require('./GamblingManager.js');
 const { addBet } = require('./Utils.js');
 
 module.exports = class Created_c4317439 extends GamblingManager {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Created(address,bytes32,address,bytes,uint256)';
     this.hexSignature = '0xc4317439075cf670016d9fff15c98babe21304c2c393e72a80d34d993779e70a';
@@ -43,6 +43,6 @@ module.exports = class Created_c4317439 extends GamblingManager {
       nonce_salt: event._nonce.toString()
     };
 
-    await addBet(this.redis, this.w3Utils, this.erc20, event, betObj);
+    await addBet(event, betObj);
   }
 };

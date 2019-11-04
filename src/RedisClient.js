@@ -2,10 +2,6 @@ const redis = require('redis');
 const { promisify } = require('util');
 
 module.exports = class RedisClient {
-  constructor(w3Utils) {
-    this.w3Utils = w3Utils;
-  }
-
   async init() {
     this.client = await this.getClient();
 
@@ -19,7 +15,7 @@ module.exports = class RedisClient {
     this.lremAsync = promisify(this.client.lrem).bind(this.client);
 
     const ethCurrency = {
-      address: this.w3Utils.address0x,
+      address: process.w3Utils.address0x,
       name: 'Ethereum',
       symbol: 'ETH',
       iconUrl: '???',
@@ -67,7 +63,7 @@ module.exports = class RedisClient {
 
     // Wait for redis connect
     while (!this.ready) {
-      await this.w3Utils.sleep(500);
+      await process.w3Utils.sleep(500);
       console.log('Wait: ' + 500 + ' ms for redis');
     }
 
@@ -75,10 +71,10 @@ module.exports = class RedisClient {
   }
 
   async sub(key, value) {
-    value = this.w3Utils.bn(value);
+    value = process.w3Utils.bn(value);
 
     let userBalance = await this.getAsync(key);
-    userBalance = this.w3Utils.bn(userBalance);
+    userBalance = process.w3Utils.bn(userBalance);
     userBalance = userBalance.sub(value);
 
     if(userBalance.isNeg())
@@ -88,11 +84,11 @@ module.exports = class RedisClient {
   }
 
   async add(key, value) {
-    value = this.w3Utils.bn(value);
+    value = process.w3Utils.bn(value);
 
     let userBalance = await this.getAsync(key);
     userBalance = userBalance ? userBalance : 0;
-    userBalance = this.w3Utils.bn(userBalance);
+    userBalance = process.w3Utils.bn(userBalance);
     userBalance = userBalance.add(value);
     await this.setAsync(key, userBalance);
   }

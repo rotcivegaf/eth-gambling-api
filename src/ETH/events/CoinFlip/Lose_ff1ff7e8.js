@@ -1,8 +1,8 @@
 const CoinFlip = require('./CoinFlip.js');
 
 module.exports = class Lose_ff1ff7e8 extends CoinFlip {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Lose(uint256,uint256,uint256,uint256)';
     this.hexSignature = '0xff1ff7e80e3a256a45b864dc9466ea84e6429b7f9f02cb754273d316fc6d4413';

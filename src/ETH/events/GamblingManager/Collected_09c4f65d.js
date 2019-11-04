@@ -1,8 +1,8 @@
 const GamblingManager = require('./GamblingManager.js');
 
 module.exports = class Collected_09c4f65d extends GamblingManager {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Collected(address,bytes32,address,uint256,bytes)';
     this.hexSignature = '0x09c4f65d7f2abc599371a31f6965ff6c7ac7f452d3623419351a1ea55a41cd76';
@@ -47,6 +47,6 @@ module.exports = class Collected_09c4f65d extends GamblingManager {
       data: event._data
     };
 
-    await this.redis.rpushAsync(keyCollect, JSON.stringify(betCollect));
+    await process.redis.rpushAsync(keyCollect, JSON.stringify(betCollect));
   }
 };

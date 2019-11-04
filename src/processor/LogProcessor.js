@@ -1,8 +1,7 @@
+const logger = require('./logger.js');
+
 module.exports = class LogProcessor {
-  constructor(w3Utils, redisClient, logger) {
-    this.w3Utils = w3Utils;
-    this.redisClient = redisClient;
-    this.logger = logger;
+  constructor() {
     // This attr storage the process method of each events of the contracts
     this.eventsContracts = this.initEventsContracts();
   }
@@ -11,7 +10,7 @@ module.exports = class LogProcessor {
     const event = this.eventsContracts[log.address][log.topics[0]];
     const contractName = process.environment.contracts.find(c => c.address === log.address).name;
 
-    this.logger.log(contractName, event.signature);
+    logger.log(contractName, event.signature);
 
     return await event.process(log);
   }
@@ -25,7 +24,7 @@ module.exports = class LogProcessor {
       for (let obj of contract.abi) {
         if (obj.type === 'event') {
           const Event = require('../ETH/events/' + contract.name + '/' + this.getName(obj) + '.js');
-          const event = new Event(this.w3Utils, this.redisClient);
+          const event = new Event(process.w3Utils, process.redisClient);
 
           events[event.hexSignature] = event;
         }
@@ -47,7 +46,7 @@ module.exports = class LogProcessor {
     }
     signature += ')';
 
-    const hexSignature = this.w3Utils.w3.eth.abi.encodeEventSignature(signature);
+    const hexSignature = process.w3Utils.w3.eth.abi.encodeEventSignature(signature);
     const name = signature.split('(')[0];
     const hexBytes4 = hexSignature.slice(2, 10);
 

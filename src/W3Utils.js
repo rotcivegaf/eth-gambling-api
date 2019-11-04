@@ -7,6 +7,8 @@ module.exports = class W3Utils {
     this.address0x = '0x0000000000000000000000000000000000000000';
 
     this.w3 = new W3(new W3.providers.HttpProvider(process.environment.nodeEth));
+    console.log('Connect Web3 to ' + this.w3.currentProvider.host);
+
     this.isBN = this.w3.utils.isBN;
     this.getPastLogs = this.w3.eth.getPastLogs;
     this.getTransactionReceipt = this.w3.eth.getPastLogs;

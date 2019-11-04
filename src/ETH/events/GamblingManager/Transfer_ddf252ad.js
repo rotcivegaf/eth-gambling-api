@@ -1,8 +1,8 @@
 const GamblingManager = require('./GamblingManager.js');
 
 module.exports = class Transfer_ddf252ad extends GamblingManager {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Transfer(address,address,uint256)';
     this.hexSignature = '0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef';
@@ -27,17 +27,17 @@ module.exports = class Transfer_ddf252ad extends GamblingManager {
 
   async process(log) {
     const event = await this.decodeLog(log);
-    const erc721Id = this.w3Utils.numberToHex(event._tokenId);
+    const erc721Id = process.w3Utils.numberToHex(event._tokenId);
 
-    if (event._from !== this.w3Utils.address0x) {
+    if (event._from !== process.w3Utils.address0x) {
       const keyRemove = ['user', event._from, 'bets'].join(':');
-      await this.redis.lremAsync(keyRemove, 0, erc721Id);
+      await process.redis.lremAsync(keyRemove, 0, erc721Id);
     } else {
       // TODO do something...
       // New Bet(ERC721)
     }
 
     const keyPush = ['user', event._to, 'bets'].join(':');
-    await this.redis.rpushAsync(keyPush, erc721Id);
+    await process.redis.rpushAsync(keyPush, erc721Id);
   }
 };

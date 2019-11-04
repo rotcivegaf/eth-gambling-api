@@ -1,8 +1,8 @@
 const GamblingManager = require('./GamblingManager.js');
 
 module.exports = class Canceled_d744c1c5 extends GamblingManager {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Canceled(address,bytes32,uint256,bytes)';
     this.hexSignature = '0xd744c1c5cd64d72ad94554c85175294ff7a51c795e9ffba8fd82b2be3d3e8699';
@@ -41,6 +41,6 @@ module.exports = class Canceled_d744c1c5 extends GamblingManager {
       data: event._data
     };
 
-    await this.redis.setAsync(keyCancel, JSON.stringify(betCancelObj));
+    await process.redis.setAsync(keyCancel, JSON.stringify(betCancelObj));
   }
 };

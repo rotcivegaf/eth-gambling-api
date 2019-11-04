@@ -1,8 +1,8 @@
 const CoinFlip = require('./CoinFlip.js');
 
 module.exports = class SetMultiplier_7c36f4f0 extends CoinFlip {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'SetMultiplier(uint256,uint256)';
     this.hexSignature = '0x7c36f4f09129892bcf3dc5b110d9b3644884bbdd87fa190dcc3b1e9877dc4384';

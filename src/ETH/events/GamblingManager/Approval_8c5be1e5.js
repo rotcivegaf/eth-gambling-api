@@ -1,8 +1,8 @@
 const GamblingManager = require('./GamblingManager.js');
 
 module.exports = class Approval_8c5be1e5 extends GamblingManager {
-  constructor(w3Utils, redisClient) {
-    super(w3Utils, redisClient);
+  constructor() {
+    super();
 
     this.signature = 'Approval(address,address,uint256)';
     this.hexSignature = '0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925';
