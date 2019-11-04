@@ -5,13 +5,7 @@ const PORT = process.env.PORT || 5000;
 
 const bytes32AllCaraters = '0x????????????????????????????????????????????????????????????????';
 
-let redis;
-let w3Utils;
-
-module.exports = async (_w3Utils, _redis) => {
-  redis = _redis;
-  w3Utils = _w3Utils;
-
+module.exports = async () => {
   const app = express();
   app.use(cors());
   app.listen(PORT, () => console.info(`Listening on ${ PORT }`));
@@ -33,7 +27,7 @@ module.exports = async (_w3Utils, _redis) => {
 
 async function isSync(res) {
   const lastProcessBlock = await getKey('lastProcessBlock');
-  const actualBlock = (await w3Utils.getBlock()).number;
+  const actualBlock = (await process.w3Utils.getBlock()).number;
 
   return res.json({
     'lastProcessBlock': lastProcessBlock,
@@ -47,14 +41,17 @@ async function getlastProcessBlock(req, res) {
 }
 
 async function getCurrencies(req, res) {
-  return res.json({ 'currencies': await lrangeKey('currencies', 0, -1) });
+  const jsonCurrencies = await process.redis.lrangeAsync('currencies', 0, -1);
+  const currencies = jsonCurrencies.map(x => JSON.parse(x));
+
+  return res.json(currencies);
 }
 
 async function getKey(key) {
   if (typeof key !== 'string')
     key.join(':');
 
-  return redis.getAsync(key).then(response => {
+  return process.redis.getAsync(key).then(response => {
     return response;
   }).catch(logE);
 }
@@ -63,7 +60,7 @@ async function lrangeKey(key, from, to) {
   if (typeof key !== 'string')
     key.join(':');
 
-  return redis.lrangeAsync(key, from, to).then(response => {
+  return process.redis.lrangeAsync(key, from, to).then(response => {
     return response;
   }).catch(logE);
 }
