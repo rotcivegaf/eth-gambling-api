@@ -1,4 +1,5 @@
 const GamblingManager = require('./GamblingManager.js');
+const { addBet } = require('./Utils.js');
 
 module.exports = class Created2_74da9738 extends GamblingManager {
   constructor(w3Utils, redisClient) {
@@ -37,17 +38,11 @@ module.exports = class Created2_74da9738 extends GamblingManager {
 
   async process(log) {
     const event = await this.decodeLog(log);
-
-    const key = ['bet', event._id].join(':');
     const betObj = {
-      sender: event._sender,
-      token: event._token,
-      data: event._data,
       createTipe: 2,
       nonce_salt: event._salt.toString()
     };
 
-    await this.redis.setAsync(key, JSON.stringify(betObj));
-    await this.redis.arrayUniquePush('currencies', event._token);
+    await addBet(this.redis, this.w3Utils, this.erc20, event, betObj);
   }
 };

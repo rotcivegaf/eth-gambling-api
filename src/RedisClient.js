@@ -3,9 +3,11 @@ const { promisify } = require('util');
 
 module.exports = class RedisClient {
   constructor(w3Utils) {
-    this.ready = false;
     this.w3Utils = w3Utils;
-    this.client = this.getClient();
+  }
+
+  async init() {
+    this.client = await this.getClient();
 
     this.existsAsync = promisify(this.client.exists).bind(this.client);
     this.getAsync = promisify(this.client.get).bind(this.client);
@@ -15,6 +17,18 @@ module.exports = class RedisClient {
 
     this.rpushAsync = promisify(this.client.rpush).bind(this.client);
     this.lremAsync = promisify(this.client.lrem).bind(this.client);
+
+    const ethCurrency = {
+      address: this.w3Utils.address0x,
+      name: 'Ethereum',
+      symbol: 'ETH',
+      iconUrl: '???',
+    };
+
+    await this.rpushAsync('currencies', JSON.stringify(ethCurrency));
+    await this.setAsync('lastProcessBlock', 0);
+
+    return this;
   }
 
   async setAsync(key, data) {
@@ -40,7 +54,7 @@ module.exports = class RedisClient {
     await this.rpushAsync(key, element);
   }
 
-  getClient() {
+  async getClient() {
     const client = redis.createClient(process.environment.redisUrl);
 
     const _this = this;
@@ -50,6 +64,12 @@ module.exports = class RedisClient {
       console.log('DB deleted');
       _this.ready = true;
     });
+
+    // Wait for redis connect
+    while (!this.ready) {
+      await this.w3Utils.sleep(500);
+      console.log('Wait: ' + 500 + ' ms for redis');
+    }
 
     return client;
   }

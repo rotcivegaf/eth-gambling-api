@@ -1,3 +1,6 @@
+const ERC20Json = require('../build/contracts/ERC20.json');
+
+
 module.exports = class Event {
   constructor(w3Utils, redisClient) {
     this.w3Utils = w3Utils;
@@ -6,6 +9,8 @@ module.exports = class Event {
     this.hexSignature = '';
     this.contract = undefined;
     this.inputs = [];
+
+    this.erc20 = new w3Utils.w3.eth.Contract(ERC20Json.abi);
   }
 
   async decodeLog(log) {
