@@ -7,7 +7,8 @@ module.exports = class RedisClient {
 
     this.existsAsync = promisify(this.client.exists).bind(this.client);
     this.getAsync = promisify(this.client.get).bind(this.client);
-    this.getKeysAsync = promisify(this.client.keys).bind(this.client);
+    this.getKeysAsync = promisify(this.client.keys).bind(this.client); // TODO: USE SCAN
+    this.mgetAsync = promisify(this.client.mget).bind(this.client);
     this.hgetAsync = promisify(this.client.hget).bind(this.client);
     this.lrangeAsync = promisify(this.client.lrange).bind(this.client);
 

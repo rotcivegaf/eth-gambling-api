@@ -14,19 +14,19 @@ module.exports = async () => {
   // Last process block
   app.get('/lastProcessBlock', (req, res) => getlastProcessBlock(req, res));
   // TIP ERC20
-  app.get('/tip/:token', (req, res) => res.json(getKey(['tip', 'token', req.params.token])));
+  app.get('/tip/:token', async (req, res) => res.json(await getValue(['tip', 'token', req.params.token])));
   // Currencies
   app.get('/currencies', (req, res) => getCurrencies(req, res));
   // Bets
-  app.get('/bets', (req, res) => res.json(getKey(['bet', bytes32AllCaraters])));
+  app.get('/bets', async (req, res) => res.json(await getValues(['bet', bytes32AllCaraters])));
   // GamblingManager ownership
-  app.get('/gamblingManager/owner', (req, res) => res.json(getKey(['GamblingManager', 'owner'])));
+  app.get('/gamblingManager/owner', async (req, res) => res.json(await getValue(['GamblingManager', 'owner'])));
   // CoinFlip ownership
-  app.get('/coinFlip/owner', (req, res) => res.json(getKey(['CoinFlip', 'owner'])));
+  app.get('/coinFlip/owner', async (req, res) => res.json(await getValue(['CoinFlip', 'owner'])));
 };
 
 async function isSync(res) {
-  const lastProcessBlock = await getKey('lastProcessBlock');
+  const lastProcessBlock = await getValue('lastProcessBlock');
   const actualBlock = (await process.w3Utils.getBlock()).number;
 
   return res.json({
@@ -37,7 +37,7 @@ async function isSync(res) {
 }
 
 async function getlastProcessBlock(req, res) {
-  return res.json({ 'lastProcessBlock': await getKey('lastProcessBlock') });
+  return res.json({ 'lastProcessBlock': await getValue('lastProcessBlock') });
 }
 
 async function getCurrencies(req, res) {
@@ -47,9 +47,23 @@ async function getCurrencies(req, res) {
   return res.json(currencies);
 }
 
-async function getKey(key) {
+async function getValues(key) {
   if (typeof key !== 'string')
-    key.join(':');
+    key = key.join(':');
+
+  const keys = await process.redis.getKeysAsync(key);
+
+  if (keys.length === 0)
+    return 'There is no keys with pattern' + key;
+
+  return process.redis.mgetAsync(keys).then(response => {
+    return response.map(x => JSON.parse(x));
+  }).catch(logE);
+}
+
+async function getValue(key) {
+  if (typeof key !== 'string')
+    key = key.join(':');
 
   return process.redis.getAsync(key).then(response => {
     return response;
