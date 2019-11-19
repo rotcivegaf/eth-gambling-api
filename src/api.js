@@ -57,7 +57,11 @@ async function getValues(key) {
     return 'There is no keys with pattern' + key;
 
   return process.redis.mgetAsync(keys).then(response => {
-    return response.map(x => JSON.parse(x));
+    return response.map((bet, i) => {
+      bet = JSON.parse(bet);
+      bet.id = keys[i].slice(4);
+      return bet;
+    });
   }).catch(logE);
 }
 
