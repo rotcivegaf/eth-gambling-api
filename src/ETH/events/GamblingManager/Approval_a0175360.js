@@ -8,24 +8,24 @@ module.exports = class Approval_a0175360 extends GamblingManager {
     this.hexSignature = '0xa0175360a15bca328baf7ea85c7b784d58b222a50d0ce760b10dba336d226a61';
     this.inputs = [
       {
-        'indexed':true,
-        'name':'_owner',
-        'type':'address'
+        'indexed': true,
+        'name': '_owner',
+        'type': 'address'
       },
       {
-        'indexed':true,
-        'name':'_spender',
-        'type':'address'
+        'indexed': true,
+        'name': '_spender',
+        'type': 'address'
       },
       {
-        'indexed':false,
-        'name':'_token',
-        'type':'address'
+        'indexed': false,
+        'name': '_token',
+        'type': 'address'
       },
       {
-        'indexed':false,
-        'name':'_value',
-        'type':'uint256'
+        'indexed': false,
+        'name': '_value',
+        'type': 'uint256'
       }
     ];
   }

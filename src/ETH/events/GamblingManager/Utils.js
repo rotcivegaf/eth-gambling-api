@@ -2,6 +2,7 @@ module.exports.addBet = async (event, betObj) => {
   betObj = {
     sender: event._sender,
     token: event._token,
+    model: event._model,
     data: event._data,
   };
 

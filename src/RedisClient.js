@@ -75,6 +75,7 @@ module.exports = class RedisClient {
     value = process.w3Utils.bn(value);
 
     let userBalance = await this.getAsync(key);
+
     userBalance = process.w3Utils.bn(userBalance);
     userBalance = userBalance.sub(value);
 

@@ -8,14 +8,14 @@ module.exports = class SetMaxBetAmount_2f797d9e extends CoinFlip {
     this.hexSignature = '0x2f797d9e895271236f9486994ffcefb1e27e7a031d9ec1beda769d4c8ac269ea';
     this.inputs = [
       {
-        'indexed':false,
-        'name':'_id',
-        'type':'bytes32'
+        'indexed': false,
+        'name': '_id',
+        'type': 'bytes32'
       },
       {
-        'indexed':false,
-        'name':'_maxBetAmount',
-        'type':'uint256'
+        'indexed': false,
+        'name': '_maxBetAmount',
+        'type': 'uint256'
       }
     ];
   }

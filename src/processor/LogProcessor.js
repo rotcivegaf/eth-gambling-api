@@ -1,5 +1,3 @@
-const logger = require('./logger.js');
-
 module.exports = class LogProcessor {
   constructor() {
     // This attr storage the process method of each events of the contracts
@@ -10,7 +8,7 @@ module.exports = class LogProcessor {
     const event = this.eventsContracts[log.address][log.topics[0]];
     const contractName = process.environment.contracts.find(c => c.address === log.address).name;
 
-    logger.log(contractName, event.signature);
+    console.log(['BlockNumber: ' + log.blockNumber, 'LogIndex: ' + log.logIndex, contractName, event.signature].join('\t'));
 
     return await event.process(log);
   }
@@ -24,7 +22,7 @@ module.exports = class LogProcessor {
       for (let obj of contract.abi) {
         if (obj.type === 'event') {
           const Event = require('../ETH/events/' + contract.name + '/' + this.getName(obj) + '.js');
-          const event = new Event(process.w3Utils, process.redisClient);
+          const event = new Event(contract.address);
 
           events[event.hexSignature] = event;
         }

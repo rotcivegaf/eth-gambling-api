@@ -1,6 +1,6 @@
 const logger = require('./logger.js');
 
-module.exports = class W3Utils {
+module.exports = class Processor {
   async process() {
     const interval = process.environment.interval;
     const wait = process.environment.wait;
@@ -28,6 +28,7 @@ module.exports = class W3Utils {
         });
 
         for (const log of logs) {
+          log.address = process.w3Utils.w3.utils.toChecksumAddress(log.address);
           await process.logProcessor.process(log);
         }
         await process.redis.setAsync('lastProcessBlock', to.toString());

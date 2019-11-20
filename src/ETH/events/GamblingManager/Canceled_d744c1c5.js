@@ -8,24 +8,24 @@ module.exports = class Canceled_d744c1c5 extends GamblingManager {
     this.hexSignature = '0xd744c1c5cd64d72ad94554c85175294ff7a51c795e9ffba8fd82b2be3d3e8699';
     this.inputs = [
       {
-        'indexed':true,
-        'name':'_sender',
-        'type':'address'
+        'indexed': true,
+        'name': '_creator',
+        'type': 'address'
       },
       {
-        'indexed':true,
-        'name':'_id',
-        'type':'bytes32'
+        'indexed': true,
+        'name': '_id',
+        'type': 'bytes32'
       },
       {
-        'indexed':false,
-        'name':'_amount',
-        'type':'uint256'
+        'indexed': false,
+        'name': '_amount',
+        'type': 'uint256'
       },
       {
-        'indexed':false,
-        'name':'_data',
-        'type':'bytes'
+        'indexed': false,
+        'name': '_data',
+        'type': 'bytes'
       }
     ];
   }

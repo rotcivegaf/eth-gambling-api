@@ -1,8 +1,8 @@
 module.exports = class Event {
-  constructor() {
+  constructor(address) {
     this.signature = '';
     this.hexSignature = '';
-    this.contract = undefined;
+    this.address = address;
     this.inputs = [];
   }
 

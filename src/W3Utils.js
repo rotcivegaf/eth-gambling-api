@@ -9,10 +9,12 @@ module.exports = class W3Utils {
     this.w3 = new W3(new W3.providers.HttpProvider(process.environment.nodeEth));
     console.log('Connect Web3 to ' + this.w3.currentProvider.host);
 
-    this.isBN = this.w3.utils.isBN;
     this.getPastLogs = this.w3.eth.getPastLogs;
     this.getTransactionReceipt = this.w3.eth.getPastLogs;
-    this.numberToHex = this.w3.utils.numberToHex;
+
+    this.isBN = W3.utils.isBN;
+    this.numberToHex = W3.utils.numberToHex;
+    this.bn = W3.utils.toBN;
   }
 
   async getBlock(x = 'latest') {
@@ -25,9 +27,5 @@ module.exports = class W3Utils {
     }
 
     return block;
-  }
-
-  bn(x) {
-    return this.w3.utils.toBN(x);
   }
 };

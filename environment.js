@@ -1,3 +1,5 @@
+const W3 = require('web3');
+
 const GamblingManager = require('./src/ETH/build/contracts/GamblingManager.json');
 const CoinFlip = require('./src/ETH/build/contracts/CoinFlip.json');
 
@@ -24,8 +26,8 @@ const contracts = [
 ];
 
 const contractsAddressesRopsten = [];
-contractsAddressesRopsten['GamblingManager'] = '0x05970e00BF12d59EF86dBFCc20a7318F985F8df7';
-contractsAddressesRopsten['CoinFlip'] = '0xD6194d28061edCe3bA9d9A5E2933a2bECAF63829';
+contractsAddressesRopsten['GamblingManager'] = '0x734914c77665f59A1e307E9F537d8d26e3dD0CE8';
+contractsAddressesRopsten['CoinFlip'] = '0x3e8efe70fdacf4b1e90b388007c3765c6ed4f843';
 
 const contractsAddressesTest = [];
 contractsAddressesTest['GamblingManager'] = '0x3C07FaA16fB56381eD3d1c704061746Bbd115Dd3';
@@ -45,7 +47,7 @@ module.exports = {
     redisUrl: process.env.REDISCLOUD_URL,// '//localhost:6379',
     nodeEth: nodes.infura.ropsten,
     interval: 10000,
-    startBlock: 6323134,
+    startBlock: 6813784,
     wait: 29000
   }/*,
   test: {
@@ -61,7 +63,10 @@ module.exports = {
 };
 
 function addAddresses(addresses) {
-  for (let i = 0; i < contracts.length; i++)
+  for (let i = 0; i < contracts.length; i++) {
+    addresses[contracts[i].name] = W3.utils.toChecksumAddress(addresses[contracts[i].name]);
     contracts[i].address = addresses[contracts[i].name];
+  }
+
   return contracts;
 }
