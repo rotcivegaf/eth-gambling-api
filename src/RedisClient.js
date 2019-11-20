@@ -15,14 +15,6 @@ module.exports = class RedisClient {
     this.rpushAsync = promisify(this.client.rpush).bind(this.client);
     this.lremAsync = promisify(this.client.lrem).bind(this.client);
 
-    const ethCurrency = {
-      address: process.w3Utils.address0x,
-      name: 'Ethereum',
-      symbol: 'ETH',
-      iconUrl: '???',
-    };
-
-    await this.rpushAsync('currencies', JSON.stringify(ethCurrency));
     await this.setAsync('lastProcessBlock', 0);
 
     return this;
