@@ -1,4 +1,5 @@
 const GamblingManager = require('./GamblingManager.js');
+const { addCurrency } = require('./Utils.js');
 
 module.exports = class Deposit_7cfff908 extends GamblingManager {
   constructor() {
@@ -35,5 +36,7 @@ module.exports = class Deposit_7cfff908 extends GamblingManager {
 
     const keyAdd = ['user', event._to, 'token', event._token, 'balance'].join(':');
     await process.redis.add(keyAdd, event._value.toString());
+
+    await addCurrency(event._token);
   }
 };

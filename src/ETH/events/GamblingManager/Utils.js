@@ -11,14 +11,19 @@ module.exports.addBet = async (event, betObj) => {
   await process.redis.setAsync(key, JSON.stringify(betObj));
 
   // Add currency
+  await this.addCurrency(event._token);
+};
+
+module.exports.addCurrency = async (tokenAddress) => {
   const jsonCurrencies = await process.redis.lrangeAsync('currencies', 0, -1);
   const currencies = jsonCurrencies.map(x => JSON.parse(x));
-  const currencyExists = currencies.some(x => x.address === event._token);
+  const currencyExists = currencies.some(x => x.address === tokenAddress);
+
   if (!currencyExists) {
-    process.contracts.erc20._address = event._token;
+    process.contracts.erc20._address = tokenAddress;
 
     const currency = {
-      address: event._token,
+      address: tokenAddress,
       name: await process.contracts.erc20.methods.name().call(),
       symbol: await process.contracts.erc20.methods.symbol().call(),
       iconUrl: '???',
