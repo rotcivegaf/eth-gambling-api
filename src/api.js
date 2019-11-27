@@ -4,6 +4,7 @@ const cors = require('cors');
 const PORT = process.env.PORT || 5000;
 
 const bytes32AllCaraters = '0x????????????????????????????????????????????????????????????????';
+const addressAllCaraters = '0x????????????????????????????????????????';
 
 module.exports = async () => {
   const app = express();
@@ -17,6 +18,8 @@ module.exports = async () => {
   app.get('/tip/:token', async (req, res) => res.json(await getValue(['tip', 'token', req.params.token])));
   // Currencies
   app.get('/currencies', (req, res) => getCurrencies(req, res));
+  // User data
+  app.get('/user/:address', async (req, res) => getUser(req, res, req.params.address));
   // Bets
   app.get('/bets', async (req, res) => res.json(await getValues(['bet', bytes32AllCaraters])));
   // GamblingManager ownership
@@ -47,6 +50,36 @@ async function getCurrencies(req, res) {
   return res.json(currencies);
 }
 
+async function getUser(req, res, address) {
+  // Get user balances
+  const balKey = ['user', address, 'token', addressAllCaraters, 'balance'].join(':');
+  const balKeys = await process.redis.getKeysAsync(balKey);
+  const balances = [];
+
+  if (balKeys.length !== 0) {
+    const amounts = await process.redis.mgetAsync(balKeys);
+    for (let i = 0; i < amounts.length; i++) {
+      const address = balKeys[i].slice(54, 54 + 42);
+      balances[i] = {
+        address: address,
+        amount: amounts[i],
+      };
+    }
+  }
+  // Get user approbals
+  // It's not necessary for now
+
+  // Get user bets
+  const betKey = ['user', address, 'bets'].join(':');
+  const bets = await process.redis.lrangeAsync(betKey, 0, -1);
+
+  return res.json({
+    balances: balances,
+    //approbals: approbals,
+    bets: bets,
+  });
+}
+
 async function getValues(key) {
   if (typeof key !== 'string')
     key = key.join(':');
@@ -54,7 +87,7 @@ async function getValues(key) {
   const keys = await process.redis.getKeysAsync(key);
 
   if (keys.length === 0)
-    return 'There is no keys with pattern' + key;
+    return 'There is no keys with pattern: "' + key + '"';
 
   return process.redis.mgetAsync(keys).then(response => {
     return response.map((bet, i) => {
@@ -70,15 +103,6 @@ async function getValue(key) {
     key = key.join(':');
 
   return process.redis.getAsync(key).then(response => {
-    return response;
-  }).catch(logE);
-}
-
-async function lrangeKey(key, from, to) {
-  if (typeof key !== 'string')
-    key.join(':');
-
-  return process.redis.lrangeAsync(key, from, to).then(response => {
     return response;
   }).catch(logE);
 }

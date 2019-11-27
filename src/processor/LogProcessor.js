@@ -16,10 +16,10 @@ module.exports = class LogProcessor {
   initEventsContracts () {
     const eventsContracts = [];
 
-    for (let contract of process.environment.contracts) {
+    for (const contract of process.environment.contracts) {
       const events = [];
 
-      for (let obj of contract.abi) {
+      for (const obj of contract.abi) {
         if (obj.type === 'event') {
           const Event = require('../ETH/events/' + contract.name + '/' + this.getName(obj) + '.js');
           const event = new Event(contract.address);
