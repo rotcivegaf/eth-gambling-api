@@ -17,6 +17,20 @@ module.exports = class W3Utils {
     this.bn = W3.utils.toBN;
   }
 
+  addToString (x, y) {
+    x = this.bn(x);
+    y = this.bn(y);
+
+    return x.add(y).toString();
+  }
+
+  subToString (x, y) {
+    x = this.bn(x);
+    y = this.bn(y);
+
+    return x.sub(y).toString();
+  }
+
   async getBlock(x = 'latest') {
     let block = await this.w3.eth.getBlock(x).catch(e => console.log(e));
 

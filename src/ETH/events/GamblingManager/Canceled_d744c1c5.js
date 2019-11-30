@@ -33,6 +33,14 @@ module.exports = class Canceled_d744c1c5 extends GamblingManager {
   async process(log) {
     const event = await this.decodeLog(log);
 
+    const keyBet = ['bet', event._id].join(':');
+    const bet = JSON.parse(await process.redis.getAsync(keyBet));
+
+    bet.amount = process.w3Utils.subToString(bet.amount, event._amount);
+
+    await process.redis.setAsync(keyBet, JSON.stringify(bet));
+
+    // Save cancel debt
     const keyCancel = ['bet', event._id, 'cancel'].join(':');
 
     const betCancelObj = {

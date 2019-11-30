@@ -38,6 +38,14 @@ module.exports = class Collected_09c4f65d extends GamblingManager {
   async process(log) {
     const event = await this.decodeLog(log);
 
+    const keyBet = ['bet', event._id].join(':');
+    const bet = JSON.parse(await process.redis.getAsync(keyBet));
+
+    bet.amount = process.w3Utils.subToString(bet.amount, event._amount);
+
+    await process.redis.setAsync(keyBet, JSON.stringify(bet));
+
+    // Save the collect
     const keyCollect = ['bet', event._id, 'collects'].join(':');
 
     const betCollect = {
