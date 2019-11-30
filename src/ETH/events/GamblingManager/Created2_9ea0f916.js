@@ -1,12 +1,12 @@
 const GamblingManager = require('./GamblingManager.js');
 const { addBet } = require('./Utils.js');
 
-module.exports = class Created3_ff90e122 extends GamblingManager {
+module.exports = class Created2_9ea0f916 extends GamblingManager {
   constructor() {
     super();
 
-    this.signature = 'Created3(address,bytes32,address,address,bytes,uint256)';
-    this.hexSignature = '0xff90e1227bd9a91b7f3d3aea848b3035e296e83d688f72d8226e1ac4112a29db';
+    this.signature = 'Created2(address,bytes32,address,address,uint256,bytes,uint256)';
+    this.hexSignature = '0x9ea0f916e885ca97da76b3c446e366a6ddf7b33737a0f7a661c331950efef359';
     this.inputs = [
       {
         'indexed': true,
@@ -30,6 +30,11 @@ module.exports = class Created3_ff90e122 extends GamblingManager {
       },
       {
         'indexed': false,
+        'name': '_takenAmount',
+        'type': 'uint256'
+      },
+      {
+        'indexed': false,
         'name': '_data',
         'type': 'bytes'
       },
@@ -44,7 +49,7 @@ module.exports = class Created3_ff90e122 extends GamblingManager {
   async process(log) {
     const event = await this.decodeLog(log);
     const betObj = {
-      createTipe: 3,
+      createTipe: 2,
       nonce_salt: event._salt.toString()
     };
 

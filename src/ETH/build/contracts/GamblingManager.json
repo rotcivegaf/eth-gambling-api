@@ -880,6 +880,11 @@
         },
         {
           "indexed": false,
+          "name": "_takenAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
           "name": "_data",
           "type": "bytes"
         },
@@ -917,6 +922,11 @@
         },
         {
           "indexed": false,
+          "name": "_takenAmount",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
           "name": "_data",
           "type": "bytes"
         },
@@ -951,6 +961,11 @@
           "indexed": false,
           "name": "_model",
           "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_takenAmount",
+          "type": "uint256"
         },
         {
           "indexed": false,
@@ -1308,6 +1323,10 @@
           "type": "address"
         },
         {
+          "name": "_maxAmount",
+          "type": "uint256"
+        },
+        {
           "name": "_data",
           "type": "bytes"
         }
@@ -1333,6 +1352,10 @@
         {
           "name": "_model",
           "type": "address"
+        },
+        {
+          "name": "_maxAmount",
+          "type": "uint256"
         },
         {
           "name": "_data",
@@ -1364,6 +1387,10 @@
         {
           "name": "_model",
           "type": "address"
+        },
+        {
+          "name": "_maxAmount",
+          "type": "uint256"
         },
         {
           "name": "_data",
