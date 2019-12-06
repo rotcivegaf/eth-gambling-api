@@ -21,6 +21,7 @@ module.exports = async () => {
   // User data
   app.get('/user/:address', async (req, res) => getUser(req, res, req.params.address));
   // Bets
+  app.get('/bet/:betId', async (req, res) => res.json(await getValues(['bet', req.params.betId])));
   app.get('/bets', async (req, res) => res.json(await getValues(['bet', bytes32AllCaraters])));
   // GamblingManager ownership
   app.get('/gamblingManager/owner', async (req, res) => res.json(await getValue(['GamblingManager', 'owner'])));
