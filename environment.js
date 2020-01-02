@@ -26,8 +26,8 @@ const contracts = [
 ];
 
 const contractsAddressesRopsten = [];
-contractsAddressesRopsten['GamblingManager'] = '0xf4a4bDBb16576380bCBD24d70b7Ddeb94a84cbA1';
-contractsAddressesRopsten['CoinFlip'] = '0x72e16E0E6E96f971ABf8fF8709977f54B9466787';
+contractsAddressesRopsten['GamblingManager'] = '0xf4c0b61a4b8e8D2900a56e8CbdD144D73EB59a26';
+contractsAddressesRopsten['CoinFlip'] = '0x3e8efe70fdacf4b1e90b388007c3765c6ed4f843';
 
 const contractsAddressesTest = [];
 contractsAddressesTest['GamblingManager'] = '0x3C07FaA16fB56381eD3d1c704061746Bbd115Dd3';
