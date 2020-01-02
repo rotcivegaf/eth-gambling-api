@@ -9,16 +9,19 @@ module.exports = class ApprovalForAll_17307eab extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_owner',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_operator',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'bool',
         'name': '_approved',
         'type': 'bool'
       }

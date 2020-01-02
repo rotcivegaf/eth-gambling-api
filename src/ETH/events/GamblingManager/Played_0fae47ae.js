@@ -9,26 +9,31 @@ module.exports = class Played_0fae47ae extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_sender',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_player',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'bytes32',
         'name': '_id',
         'type': 'bytes32'
       },
       {
         'indexed': false,
+        'internalType': 'uint256',
         'name': '_amount',
         'type': 'uint256'
       },
       {
         'indexed': false,
+        'internalType': 'bytes',
         'name': '_data',
         'type': 'bytes'
       }

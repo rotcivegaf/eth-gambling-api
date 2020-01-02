@@ -9,11 +9,13 @@ module.exports = class OwnershipTransferred_8be0079c extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_previousOwner',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_newOwner',
         'type': 'address'
       }

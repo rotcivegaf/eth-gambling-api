@@ -10,21 +10,25 @@ module.exports = class Deposit_7cfff908 extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_from',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_to',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'address',
         'name': '_token',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'uint256',
         'name': '_value',
         'type': 'uint256'
       }

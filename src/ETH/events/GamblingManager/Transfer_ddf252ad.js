@@ -9,16 +9,19 @@ module.exports = class Transfer_ddf252ad extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_from',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_to',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'uint256',
         'name': '_tokenId',
         'type': 'uint256'
       }

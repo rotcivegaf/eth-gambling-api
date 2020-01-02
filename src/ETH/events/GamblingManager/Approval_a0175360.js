@@ -9,21 +9,25 @@ module.exports = class Approval_a0175360 extends GamblingManager {
     this.inputs = [
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_owner',
         'type': 'address'
       },
       {
         'indexed': true,
+        'internalType': 'address',
         'name': '_spender',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'address',
         'name': '_token',
         'type': 'address'
       },
       {
         'indexed': false,
+        'internalType': 'uint256',
         'name': '_value',
         'type': 'uint256'
       }

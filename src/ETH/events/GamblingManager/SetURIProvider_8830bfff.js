@@ -9,6 +9,7 @@ module.exports = class SetURIProvider_8830bfff extends GamblingManager {
     this.inputs = [
       {
         'indexed': false,
+        'internalType': 'contract URIProvider',
         'name': '_uriProvider',
         'type': 'address'
       }
