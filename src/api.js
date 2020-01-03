@@ -88,26 +88,30 @@ async function getValues(key) {
   const keys = await process.redis.getKeysAsync(key);
 
   if (keys.length === 0)
-    return 'There is no keys with pattern: "' + key + '"';
+    return [];
 
-  return process.redis.mgetAsync(keys).then(response => {
-    return response.map((bet, i) => {
+  try {
+    const m = await process.redis.mgetAsync(keys);
+
+    return m.map((bet, i) => {
       bet = JSON.parse(bet);
       bet.id = keys[i].slice(4);
       return bet;
     });
-  }).catch(logE);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 }
 
 async function getValue(key) {
   if (typeof key !== 'string')
     key = key.join(':');
 
-  return process.redis.getAsync(key).then(response => {
-    return response;
-  }).catch(logE);
-}
-
-function logE(error) {
-  console.log(error);
+  try {
+    return process.redis.getAsync(key);
+  } catch (error) {
+    console.log(error);
+    return error;
+  }
 }
