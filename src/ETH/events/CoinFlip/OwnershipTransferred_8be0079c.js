@@ -1,6 +1,6 @@
-const CoinFlip = require('./CoinFlip.js');
+const Event = require('../Event.js');
 
-module.exports = class OwnershipTransferred_8be0079c extends CoinFlip {
+module.exports = class OwnershipTransferred_8be0079c extends Event {
   constructor() {
     super();
 
@@ -21,7 +21,7 @@ module.exports = class OwnershipTransferred_8be0079c extends CoinFlip {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const key = [this.contractName, 'owner'].join(':');
     await process.redis.setAsync(key, event._newOwner);

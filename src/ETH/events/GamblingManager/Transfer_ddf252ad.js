@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class Transfer_ddf252ad extends GamblingManager {
+module.exports = class Transfer_ddf252ad extends Event {
   constructor() {
     super();
 
@@ -29,7 +29,7 @@ module.exports = class Transfer_ddf252ad extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
     const erc721Id = process.w3Utils.numberToHex(event._tokenId);
 
     if (event._from !== process.w3Utils.address0x) {

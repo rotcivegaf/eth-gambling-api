@@ -1,6 +1,6 @@
-const P2P = require('./P2P.js');
+const Event = require('../Event.js');
 
-module.exports = class  extends P2P {
+module.exports = class  extends Event {
   constructor() {
     super();
 
@@ -21,7 +21,7 @@ module.exports = class  extends P2P {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const keyEvent = ['bet', event._eventId].join(':');
     const eventObj = JSON.parse(await process.redis.getAsync(keyEvent));

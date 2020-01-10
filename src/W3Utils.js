@@ -43,4 +43,8 @@ module.exports = class W3Utils {
 
     return block;
   }
+
+  getContractName(address) {
+    return process.environment.contracts.find(c => c.address === address).name;
+  }
 };

@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class Played_0fae47ae extends GamblingManager {
+module.exports = class Played_0fae47ae extends Event {
   constructor() {
     super();
 
@@ -41,7 +41,7 @@ module.exports = class Played_0fae47ae extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const keyBet = ['bet', event._id].join(':');
     const bet = JSON.parse(await process.redis.getAsync(keyBet));
@@ -61,5 +61,12 @@ module.exports = class Played_0fae47ae extends GamblingManager {
     };
 
     await process.redis.rpushAsync(keyPlay, JSON.stringify(betPlayObj));
+
+    try {
+      const model = process.eventsContracts[bet.model];
+      await model.playPostProcess(log, event);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };

@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class OwnershipTransferred_8be0079c extends GamblingManager {
+module.exports = class OwnershipTransferred_8be0079c extends Event {
   constructor() {
     super();
 
@@ -23,7 +23,7 @@ module.exports = class OwnershipTransferred_8be0079c extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const key = [this.contractName, 'owner'].join(':');
     await process.redis.setAsync(key, event._newOwner);

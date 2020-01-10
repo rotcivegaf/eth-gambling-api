@@ -1,7 +1,7 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 const { addBet } = require('./Utils.js');
 
-module.exports = class Created_274ca90e extends GamblingManager {
+module.exports = class Created_274ca90e extends Event {
   constructor() {
     super();
 
@@ -54,12 +54,19 @@ module.exports = class Created_274ca90e extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
     const betObj = {
       createTipe: 1,
       nonce_salt: event._nonce.toString()
     };
 
     await addBet(event, betObj);
+
+    try {
+      const model = process.eventsContracts[event._model];
+      await model.createPostProcess(log, event);
+    } catch (error) {
+      console.log(error);
+    }
   }
 };

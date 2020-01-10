@@ -27,14 +27,26 @@ module.exports = class Processor {
           address: addresses
         });
 
-        for (const log of logs) {
-          log.address = process.w3Utils.w3.utils.toChecksumAddress(log.address);
-          await process.logProcessor.process(log);
-        }
+        for (const log of logs)
+          await this.processLog(log);
+
         await process.redis.setAsync('lastProcessBlock', to.toString());
         logger.processedBlocks(from, to);
         from = to;
       }
     }
+  }
+
+  async processLog(log) {
+    log.address = process.w3Utils.w3.utils.toChecksumAddress(log.address);
+
+    const contract = process.eventsContracts[log.address];
+    const contractName = process.w3Utils.getContractName(log.address);
+
+    const eventSignature = contract.getEvent(log);
+
+    console.log(['BlockNumber: ' + log.blockNumber, 'LogIndex: ' + log.logIndex, contractName, eventSignature].join('\t'));
+
+    return contract.process(log);
   }
 };

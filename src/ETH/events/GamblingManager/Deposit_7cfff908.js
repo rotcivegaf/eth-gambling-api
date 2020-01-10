@@ -1,7 +1,7 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 const { addCurrency } = require('./Utils.js');
 
-module.exports = class Deposit_7cfff908 extends GamblingManager {
+module.exports = class Deposit_7cfff908 extends Event {
   constructor() {
     super();
 
@@ -36,7 +36,7 @@ module.exports = class Deposit_7cfff908 extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const keyAdd = ['user', event._to, 'token', event._token, 'balance'].join(':');
     await process.redis.add(keyAdd, event._value.toString());

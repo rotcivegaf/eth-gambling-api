@@ -1,6 +1,6 @@
-const CoinFlip = require('./CoinFlip.js');
+const Event = require('../Event.js');
 
-module.exports = class SetMaxBetAmount_2f797d9e extends CoinFlip {
+module.exports = class SetMaxBetAmount_2f797d9e extends Event {
   constructor() {
     super();
 

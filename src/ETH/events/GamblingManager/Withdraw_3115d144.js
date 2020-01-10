@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class Withdraw_3115d144 extends GamblingManager {
+module.exports = class Withdraw_3115d144 extends Event {
   constructor() {
     super();
 
@@ -35,7 +35,7 @@ module.exports = class Withdraw_3115d144 extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const keySub = ['user', event._from, 'token', event._token, 'balance'].join(':');
     await process.redis.sub(keySub, event._value.toString());

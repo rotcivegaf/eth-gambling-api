@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class Approval_a0175360 extends GamblingManager {
+module.exports = class Approval_a0175360 extends Event {
   constructor() {
     super();
 
@@ -35,7 +35,7 @@ module.exports = class Approval_a0175360 extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const key = ['user', event._owner, 'token', event._token, 'spender', event._spender, 'approval'].join(':');
 

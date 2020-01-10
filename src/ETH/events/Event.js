@@ -1,12 +1,11 @@
 module.exports = class Event {
-  constructor(address) {
+  constructor() {
     this.signature = '';
     this.hexSignature = '';
-    this.address = address;
     this.inputs = [];
   }
 
-  async decodeLog(log) {
+  decodeLog(log) {
     if (log.data == '0x')
       log.data = '';
 

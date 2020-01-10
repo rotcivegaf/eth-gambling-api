@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class SetURIProvider_8830bfff extends GamblingManager {
+module.exports = class SetURIProvider_8830bfff extends Event {
   constructor() {
     super();
 
@@ -17,7 +17,7 @@ module.exports = class SetURIProvider_8830bfff extends GamblingManager {
   }
 
   async process(log) {
-    const event = await this.decodeLog(log);
+    const event = this.decodeLog(log);
 
     const key = [this.contractName, 'URIProvider'].join(':');
     await process.redis.setAsync(key, event._uriProvider);

@@ -1,6 +1,6 @@
-const CoinFlip = require('./CoinFlip.js');
+const Event = require('../Event.js');
 
-module.exports = class Win_a8e5116b extends CoinFlip {
+module.exports = class Win_a8e5116b extends Event {
   constructor() {
     super();
 

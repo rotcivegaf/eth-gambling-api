@@ -1,6 +1,6 @@
-const GamblingManager = require('./GamblingManager.js');
+const Event = require('../Event.js');
 
-module.exports = class ApprovalForAll_17307eab extends GamblingManager {
+module.exports = class ApprovalForAll_17307eab extends Event {
   constructor() {
     super();
 
