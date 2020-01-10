@@ -5,6 +5,7 @@ module.exports = class W3Utils {
   constructor() {
     this.sleep = promisify(setTimeout);
     this.address0x = '0x0000000000000000000000000000000000000000';
+    this.bytes320x = '0x0000000000000000000000000000000000000000000000000000000000000000';
 
     this.w3 = new W3(new W3.providers.HttpProvider(process.environment.nodeEth));
     console.log('Connect Web3 to ' + this.w3.currentProvider.host);

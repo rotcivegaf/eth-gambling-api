@@ -1,0 +1,375 @@
+{
+  "contractName": "P2P",
+  "abi": [
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_eventId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_option",
+          "type": "bytes32"
+        }
+      ],
+      "name": "validate",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "p2PBets",
+      "outputs": [
+        {
+          "name": "eventId",
+          "type": "bytes32"
+        },
+        {
+          "name": "ownerOption",
+          "type": "bytes32"
+        },
+        {
+          "name": "ownerAmount",
+          "type": "uint256"
+        },
+        {
+          "name": "player",
+          "type": "address"
+        },
+        {
+          "name": "playerOption",
+          "type": "bytes32"
+        },
+        {
+          "name": "playerAmount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "DRAW",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [],
+      "name": "gamblingManager",
+      "outputs": [
+        {
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_eventId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_optionWin",
+          "type": "bytes32"
+        }
+      ],
+      "name": "setWinOption",
+      "outputs": [],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "name": "toEvent",
+      "outputs": [
+        {
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "name": "name",
+          "type": "string"
+        },
+        {
+          "name": "optionWin",
+          "type": "bytes32"
+        },
+        {
+          "name": "optionA",
+          "type": "bytes32"
+        },
+        {
+          "name": "optionB",
+          "type": "bytes32"
+        },
+        {
+          "name": "noMoreBets",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "name": "_optionA",
+          "type": "bytes32"
+        },
+        {
+          "name": "_optionB",
+          "type": "bytes32"
+        },
+        {
+          "name": "_noMoreBets",
+          "type": "uint256"
+        }
+      ],
+      "name": "addEvent",
+      "outputs": [
+        {
+          "name": "eventId",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": true,
+      "inputs": [
+        {
+          "name": "_eventId",
+          "type": "bytes32"
+        }
+      ],
+      "name": "whoWon",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "name": "_gamblingManager",
+          "type": "address"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "constructor"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_owner",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "name": "_eventId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_name",
+          "type": "string"
+        },
+        {
+          "indexed": false,
+          "name": "_noMoreBets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "name": "_optionA",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_optionB",
+          "type": "bytes32"
+        }
+      ],
+      "name": "NewEvent",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "name": "_eventId",
+          "type": "bytes32"
+        },
+        {
+          "indexed": false,
+          "name": "_optionWin",
+          "type": "bytes32"
+        }
+      ],
+      "name": "SetWinner",
+      "type": "event"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "",
+          "type": "address"
+        },
+        {
+          "name": "_betId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "create",
+      "outputs": [
+        {
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_player",
+          "type": "address"
+        },
+        {
+          "name": "_betId",
+          "type": "bytes32"
+        },
+        {
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "play",
+      "outputs": [
+        {
+          "name": "needAmount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "name": "_betId",
+          "type": "bytes32"
+        },
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "collect",
+      "outputs": [
+        {
+          "name": "retAmount",
+          "type": "uint256"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "constant": false,
+      "inputs": [
+        {
+          "name": "_sender",
+          "type": "address"
+        },
+        {
+          "name": "_betId",
+          "type": "bytes32"
+        },
+        {
+          "name": "",
+          "type": "bytes"
+        }
+      ],
+      "name": "cancel",
+      "outputs": [
+        {
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "payable": false,
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ]
+}

@@ -2,6 +2,7 @@ const W3 = require('web3');
 
 const GamblingManager = require('./src/ETH/build/contracts/GamblingManager.json');
 const CoinFlip = require('./src/ETH/build/contracts/CoinFlip.json');
+const P2P = require('./src/ETH/build/contracts/P2P.json');
 
 const nodes = {
   infura: {
@@ -23,15 +24,16 @@ const contracts = [
     name: CoinFlip.contractName,
     abi: CoinFlip.abi
   },
+  {
+    name: P2P.contractName,
+    abi: P2P.abi
+  },
 ];
 
 const contractsAddressesRopsten = [];
 contractsAddressesRopsten['GamblingManager'] = '0xf4c0b61a4b8e8D2900a56e8CbdD144D73EB59a26';
 contractsAddressesRopsten['CoinFlip'] = '0x3e8efe70fdacf4b1e90b388007c3765c6ed4f843';
-
-const contractsAddressesTest = [];
-contractsAddressesTest['GamblingManager'] = '0x3C07FaA16fB56381eD3d1c704061746Bbd115Dd3';
-contractsAddressesTest['CoinFlip'] = '0xb3597376DDb2cFF1D54F61b7b0A9Fc3729c1a2dB';
+contractsAddressesRopsten['P2P'] = '0xe74a122AE31BeA07B98a6E4D127cc357291EAcB4';
 
 module.exports = {
   main: {
@@ -49,17 +51,7 @@ module.exports = {
     interval: 10000,
     startBlock: 6813784,
     wait: 29000
-  }/*,
-  test: {
-    contracts: addAddresses(contractsAddressesTest),
-    redisUrl: '//redis:6379',
-    nodeEth: 'http://ganachecli:8545',
-    apiUrl: 'http://processor:5000',
-    mnemonic: '0',
-    interval: 1,
-    startBlock: 0,
-    wait: 5000,
-  }*/
+  }
 };
 
 function addAddresses(addresses) {
