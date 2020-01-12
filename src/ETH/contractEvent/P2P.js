@@ -26,8 +26,8 @@ module.exports = class P2P extends ContractEvent {
     bet.modelObj = {
       eventId: params[0],
       ownerOption: params[1],
-      ownerAmount: params[2],
-      playerAmount: params[3],
+      ownerAmount: process.w3Utils.w3.utils.hexToNumberString(params[2]),
+      playerAmount: process.w3Utils.w3.utils.hexToNumberString(params[3]),
     };
     bet.modelName = this.name;
 
