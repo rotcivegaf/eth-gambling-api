@@ -25,7 +25,7 @@ module.exports = class P2P extends ContractEvent {
     const params = this.toParams(event._data);
     bet.modelObj = {
       eventId: params[0],
-      ownerOption: params[1],
+      ownerOption: process.w3Utils.w3.utils.hexToAscii(params[1]),
       ownerAmount: process.w3Utils.w3.utils.hexToNumberString(params[2]),
       playerAmount: process.w3Utils.w3.utils.hexToNumberString(params[3]),
     };
@@ -39,7 +39,7 @@ module.exports = class P2P extends ContractEvent {
     const bet = JSON.parse(await process.redis.getAsync(keyBet));
 
     const params = this.toParams(event._data);
-    bet.modelObj.playerOption = params[0];
+    bet.modelObj.playerOption = process.w3Utils.w3.utils.hexToAscii(params[0]);
 
     await process.redis.setAsync(keyBet, JSON.stringify(bet));
   }
