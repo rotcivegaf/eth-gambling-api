@@ -29,6 +29,7 @@ module.exports = class P2P extends ContractEvent {
       ownerAmount: params[2],
       playerAmount: params[3],
     };
+    bet.modelName = this.name;
 
     await process.redis.setAsync(keyBet, JSON.stringify(bet));
   }
