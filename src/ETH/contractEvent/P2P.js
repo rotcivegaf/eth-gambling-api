@@ -19,35 +19,36 @@ module.exports = class P2P extends ContractEvent {
   }
 
   async createPostProcess(log, event) {
-    const key = [this.contractName, 'bet', event._id].join(':');
+    const keyBet = ['bet', event._id].join(':');
+    const bet = JSON.parse(await process.redis.getAsync(keyBet));
 
     const params = this.toParams(event._data);
-    const p2pBetObj = {
+    bet.modelObj = {
       eventId: params[0],
       ownerOption: params[1],
       ownerAmount: params[2],
       playerAmount: params[3],
     };
 
-    await process.redis.setAsync(key, JSON.stringify(p2pBetObj));
+    await process.redis.setAsync(keyBet, JSON.stringify(bet));
   }
 
   async playPostProcess(log, event) {
-    const keyP2pBet = [this.contractName, 'bet', event._id].join(':');
-    const p2pBet = JSON.parse(await process.redis.getAsync(keyP2pBet));
+    const keyBet = ['bet', event._id].join(':');
+    const bet = JSON.parse(await process.redis.getAsync(keyBet));
 
     const params = this.toParams(event._data);
-    p2pBet.playerOption = params[0];
+    bet.modelObj.playerOption = params[0];
 
-    await process.redis.setAsync(keyP2pBet, JSON.stringify(p2pBet));
+    await process.redis.setAsync(keyBet, JSON.stringify(bet));
   }
 
   async cancelPostProcess(log, event) {
-    const keyP2pBet = [this.contractName, 'bet', event._id].join(':');
-    const p2pBet = JSON.parse(await process.redis.getAsync(keyP2pBet));
+    const keyBet = ['bet', event._id].join(':');
+    const bet = JSON.parse(await process.redis.getAsync(keyBet));
 
-    p2pBet.cancel = true;
+    bet.modelObj.cancel = true;
 
-    await process.redis.setAsync(keyP2pBet, JSON.stringify(p2pBet));
+    await process.redis.setAsync(keyBet, JSON.stringify(bet));
   }
 };
